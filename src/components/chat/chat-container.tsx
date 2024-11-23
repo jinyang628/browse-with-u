@@ -2,13 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Message } from "@/types/messages/base";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import browser from "webextension-polyfill";
-import { getCurrentPageState } from "@/utils/pagestate/get";
-import { getUserById, User } from "@/stores/supabase";
-import { logger } from "@/lib/logger";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import ChatBottomBar from "@/components/chat/bottom-bar";
+import { User } from "@/stores/supabase";
+
 
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
