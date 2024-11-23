@@ -56,7 +56,7 @@ export async function invoke(input: InvokeRequest): Promise<InvokeResponse> {
       session_id: 1, // Hard coded for now
     };
 
-    const webpage_id: number = await POST("webpages", [webpage]);
+    await POST("webpages", [webpage]);
     const browser_history = await getUrlHistory();
 
     const formatted_history = formatHistory(browser_history);
