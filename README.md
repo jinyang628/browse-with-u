@@ -7,8 +7,18 @@ The whole world is chasing after async agents that automate tasks without human 
 ## How to run
 
 ```bash
-pnpm i
-pnpm dev
+pnpm i  # Install dependencies
+pnpm dev # Start the development server
+```
+
+## How to build and unpack the extension in your browser
+
+```bash
+pnpm build # Build the extension
+
+# Rename the .output folder to dist
+
+# Unpack the extension in your browser
 ```
 
 ### Hackathon Deliverables
