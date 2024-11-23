@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { GET, UPDATE, User } from "@/stores/supabase";
+import PdfUpload from "@/components/options/pdf-upload";
 
 export const UserDataForm: React.FC = () => {
   const [userData, setUserData] = useState<Partial<User>>({
@@ -26,6 +27,12 @@ export const UserDataForm: React.FC = () => {
     goals: "",
     allergies: "",
   });
+
+  const onPdfUpload = (pdf_base64_image: string) => {
+    // Call LLM
+    console.log(pdf_base64_image);
+    // setUserData(response);
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -53,7 +60,12 @@ export const UserDataForm: React.FC = () => {
     <div className="flex flex-col space-y-4 max-w-[800px] max-h-[800px] w-full p-4">
       <Card className="overflow-y-auto max-h-[600px]">
         <CardContent className="flex flex-col gap-2  overflow-y-auto">
-          <p className="text-base font-semibold my-4">Personal Information</p>
+          <div className="flex justify-between items-center w-full my-4">
+            <p className="text-base font-semibold w-[250px]">
+              Personal Information
+            </p>
+            <PdfUpload onPdfUpload={onPdfUpload} />
+          </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
