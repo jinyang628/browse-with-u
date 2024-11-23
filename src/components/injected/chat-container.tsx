@@ -169,17 +169,31 @@ export function ChatContainer({
         </div>
         {longTermMemory && !isAccepted && !isRejected && (
           <>
-          <h2 className="text-xs text-center font-semibold mt-1">Long Term Memory suggestion</h2>
-          <div className="p-2 flex flex-row gap-2">
-            <div className="flex flex-col gap-2 w-4/5">
-            <p className="text-gray-600 dark:text-gray-400 text-sm bg-gray-100 ">{longTermMemory}</p>
+            <h2 className="text-xs text-center font-semibold mt-1">
+              Long Term Memory suggestion
+            </h2>
+            <div className="p-2 flex flex-row gap-2">
+              <div className="flex flex-col gap-2 w-4/5">
+                <p className="text-gray-600 dark:text-gray-400 text-sm bg-gray-100 ">
+                  {longTermMemory}
+                </p>
+              </div>
+              <div className="flex gap-2 w-1/5">
+                <div
+                  className="w-5 h-5 bg-black rounded-sm text-white flex justify-center items-center"
+                  onClick={() => setIsRejected(true)}
+                >
+                  ✗
+                </div>
+                <div
+                  className="w-5 h-5 bg-black rounded-sm text-white flex justify-center items-center"
+                  onClick={() => setIsAccepted(true)}
+                >
+                  ✓
+                </div>
+              </div>
             </div>
-            <div className="flex gap-2 w-1/5">
-            <div className="w-5 h-5 bg-black rounded-sm text-white flex justify-center items-center" onClick={() => setIsRejected(true)}>✗</div>
-            <div className="w-5 h-5 bg-black rounded-sm text-white flex justify-center items-center" onClick={() => setIsAccepted(true)}>✓</div>
-          </div>
-        </div>
-        </>
+          </>
         )}
         {isAccepted && (
           <p className="text-black text-xs text-center bg-gray-100 p-4 rounded-lg">

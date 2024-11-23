@@ -74,5 +74,4 @@ export async function invoke(input: InvokeRequest): Promise<InvokeResponse> {
     logger.error(`Invoke error: ${error}`);
     throw error;
   }
-
 }

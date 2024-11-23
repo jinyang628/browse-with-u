@@ -4,8 +4,8 @@ import { fetchLtmInfo } from "@/utils/fetch-ltm-info";
 import { logger } from "@/lib/logger";
 
 export interface AnalysisType {
-    is_relevant: boolean;
-    url: string;
+  is_relevant: boolean;
+  url: string;
 }
 
 const ANALYSIS_PROMPT = `Look at the user's webpage history by an user and find if there are visual patterns 
@@ -30,12 +30,11 @@ export async function analyzeNewWebpages() {
     // Get unanalyzed pages and user context in parallel
     const [unanalyzedPages, userPreferences] = await Promise.all([
       GET("webpages", { is_analyzed: false }),
-      fetchLtmInfo()
+      fetchLtmInfo(),
     ]);
 
-
     if (unanalyzedPages.length < 10) {
-        return;
+      return;
     }
     if (!unanalyzedPages.length) {
       logger.info("No new pages to analyze");
@@ -43,22 +42,27 @@ export async function analyzeNewWebpages() {
     }
 
     // Process pages in parallel with rate limiting
-    const combinedPrompt = ANALYSIS_PROMPT
-      .replace("{context}", unanalyzedPages.map(p => p.url).join("\n"))
+    const combinedPrompt = ANALYSIS_PROMPT.replace(
+      "{context}",
+      unanalyzedPages.map((p) => p.url).join("\n"),
+    );
 
     const analysis = await invokeClaudeAPI(combinedPrompt);
-    
+
     // Update all pages with the same analysis
-    await Promise.all(unanalyzedPages.map(page => 
-      UPDATE("webpages", 
-        { id: page.id },
-        { response: analysis, is_analyzed: true }
-      )
-    ));
+    await Promise.all(
+      unanalyzedPages.map((page) =>
+        UPDATE(
+          "webpages",
+          { id: page.id },
+          { response: analysis, is_analyzed: true },
+        ),
+      ),
+    );
 
     logger.info(`Analyzed ${unanalyzedPages.length} new pages`);
-    
-    console.log('long term memory analysis', analysis);
+
+    console.log("long term memory analysis", analysis);
     return analysis;
   } catch (error) {
     logger.error(`Page analysis failed: ${error}`);

@@ -62,12 +62,13 @@ export default function InjectedBase() {
     saveUrlHistory([...previousHistory, newHistoryEntry].slice(-10));
 
     setTimeout(async () => {
-      const analysis = await analyzeNewWebpages().catch(err => logger.error("Failed to analyze pages:", err));
+      const analysis = await analyzeNewWebpages().catch((err) =>
+        logger.error("Failed to analyze pages:", err),
+      );
       if (analysis) {
-      setLongTermMemory(analysis);
+        setLongTermMemory(analysis);
       }
     }, 0);
-
 
     return invokeResponse;
   };
@@ -133,7 +134,9 @@ export default function InjectedBase() {
   }
 
   return (
-    <div className={`fixed inset-0 pointer-events-none ${unseenMessageExist ? "animate-subtle-bounce" : ""}`}>
+    <div
+      className={`fixed inset-0 pointer-events-none ${unseenMessageExist ? "animate-subtle-bounce" : ""}`}
+    >
       {/* <div className="absolute bottom-11 right-11">
         <TogglableSpeechBubble text={"!!!"} isVisible={unseenMessageExist} />
       </div> */}
