@@ -3,6 +3,7 @@ import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
 import { logger } from "@/lib/logger";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
+import { usePageStateHistoryStore } from "@/types/store/history";
 import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
 
@@ -13,6 +14,7 @@ export default function InjectedBase() {
     useState<boolean>(false);
   const [isRendered, setIsRendered] = useState<boolean>(false);
   const { recordingState, setRecordingState } = useRecordingStore();
+  const { pageStateHistory, setPageStateHistory } = usePageStateHistoryStore();
 
   useEffect(() => {
     setIsRendered(true);
@@ -20,6 +22,17 @@ export default function InjectedBase() {
 
   const handleRecording = async () => {
     const pageState = await getCurrentPageState();
+    if (!pageState) {
+      logger.error("Page state is not available");
+      return;
+    }
+
+    if (pageStateHistory.history.length >= 10) {
+      pageStateHistory.history.shift();
+    }
+    pageStateHistory.history.push(pageState);
+    setPageStateHistory(pageStateHistory);
+
     const invokeRequest = invokeRequestSchema.parse({
       pageState: pageState,
     });

@@ -3,7 +3,6 @@ import { Message } from "@/types/messages/base";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
-import { getCurrentPageState } from "@/utils/pagestate/get";
 import { logger } from "@/lib/logger";
 import ChatBottomBar from "@/components/injected/bottom-bar";
 import { Separator } from "@/components/ui/separator";
