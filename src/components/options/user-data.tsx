@@ -6,8 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { GET, UPDATE, User } from "@/stores/supabase";
 import PdfUpload from "@/components/options/pdf-upload";
 import { extractProfileFromPdf } from "@/actions/llm/profileFuncCall";
+import { cn } from "@/lib/utils";
 
 export const UserDataForm: React.FC = () => {
+  const [isTyping, setIsTyping] = useState(false);
   const [userData, setUserData] = useState<Partial<User>>({
     name: "",
     date_of_birth: "",
@@ -38,7 +40,6 @@ export const UserDataForm: React.FC = () => {
   const useTypewriter = (text: string, speed: number = 50) => {
     const [displayText, setDisplayText] = useState("");
 
-
     useEffect(() => {
       let i = -1;
       if (!text) {
@@ -66,6 +67,10 @@ export const UserDataForm: React.FC = () => {
         // Add null check
         setUserData(extracted_data);
       }
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+      }, 1000);
     };
     updateUserData();
   };
@@ -113,6 +118,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.name || "")}
                 onChange={handleChange("name")}
                 placeholder="Enter your name"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -123,6 +133,11 @@ export const UserDataForm: React.FC = () => {
                 type="date"
                 value={useTypewriter(userData.date_of_birth || "")}
                 onChange={handleChange("date_of_birth")}
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -134,6 +149,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.email || "")}
                 onChange={handleChange("email")}
                 placeholder="Enter your email"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -145,6 +165,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.location || "")}
                 onChange={handleChange("phone")}
                 placeholder="Enter your phone number"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -159,6 +184,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.location || "")}
                 onChange={handleChange("location")}
                 placeholder="Enter your location"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -169,6 +199,11 @@ export const UserDataForm: React.FC = () => {
                 type="text"
                 value={userData.nationality || ""}
                 onChange={handleChange("nationality")}
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -180,6 +215,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.languages || "")}
                 onChange={handleChange("languages")}
                 placeholder="Enter your languages"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -192,6 +232,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.health_conditions || "")}
                 onChange={handleChange("health_conditions")}
                 placeholder="Enter your health conditions"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -203,6 +248,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.allergies || "")}
                 onChange={handleChange("allergies")}
                 placeholder="Enter your allergies"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -214,6 +264,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.fitness_goals || "")}
                 onChange={handleChange("fitness_goals")}
                 placeholder="Enter your fitness goals"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -225,6 +280,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.sleep_hours || "")}
                 onChange={handleChange("sleep_hours")}
                 placeholder="Enter your sleep hours"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -237,6 +297,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.occupation || "")}
                 onChange={handleChange("occupation")}
                 placeholder="Enter your occupation"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -248,6 +313,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.industry || "")}
                 onChange={handleChange("industry")}
                 placeholder="Enter your industry"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -259,6 +329,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.skills || "")}
                 onChange={handleChange("skills")}
                 placeholder="Enter your skills"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -273,6 +348,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.hobbies || "")}
                 onChange={handleChange("hobbies")}
                 placeholder="Enter your hobbies"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -284,6 +364,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.food || "")}
                 onChange={handleChange("food")}
                 placeholder="Enter your food"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -295,6 +380,11 @@ export const UserDataForm: React.FC = () => {
                 value={useTypewriter(userData.goals || "")}
                 onChange={handleChange("goals")}
                 placeholder="Enter your goals"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
