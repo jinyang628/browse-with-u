@@ -4,11 +4,14 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
+import { useQueries } from "@tanstack/react-query";
+import { getUserById, User } from "@/stores/supabase";
 import { logger } from "@/lib/logger";
 
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
