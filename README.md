@@ -12,6 +12,9 @@ pnpm dev
 ### Hackathon Deliverables
 
 - 3 minute demo
+  > user is looking for food and agent finds him food that fits his itinerary and preferences (allergies etc)
+  > user is filling up a job application for supabase and agent gives recommendations
+  > user is writing a report, toggling between reading blogs/articles and his google doc, and agent gives suggestion
 - 1 minute video
 - 1 main visual
 
@@ -37,14 +40,44 @@ Use case (need to come up with more)
 
 P0 Core functionalities
 
-- Agent can store page states from user browsing (STM)
-- Agent can store user-defined information (LTM)
-- Agent can identify objectives
-- Agent can give suggestions based on LTM and STM
+- store list of 10 most recent page states from user browsing (STM)
+- store user-defined information (LTM)
+  > LTM is a single string
+- identify objectives
+  > input: list of page states,
+  > output: objective of the user
+- give suggestions to objectives based on LTM and STM
+  > input: objective, LTM, STM
+  > output: suggestions
 
-P1:
+P0 demo:
 
+- user is looking for food and agent finds him food that fits his itinerary and preferences (allergies etc)
+  > user searches for "food near me"
+  > popup shows "ramen nagi is 50 meters away from you, does not have peanuts" (based on LTM that user loves ramen and is allergic to peanuts)
+- user is filling up a job application for supabase and agent gives recommendations
+  > user is on the page for "job application for supabase"
+  > popup returns resume in bullet points and user can easily crtl-c and crtl-v
+
+P1/P2
+
+preprocessing:
+
+- We have a function that extracts domain andquery params from url (cut size of url)
+- page states store url params and domain instead of entire url
+
+- Agent has a functional window of recent page states.
 - Agent can add things to LTM using user's answers to preference questions
+- Agent can identify if user is in scrolling mode (dont track page states)
+- use screenshots to get more context
+- press tab to autocomplete
+
+P1/P2 demo:
+
+- agent asks preference questions and adds to LTM
+- press tab to autocomplete while filling up job application
+- agent only collects page states when user is not in scrolling mode
+- agent can interpret data from screenshots effectively.
 
 Preference questions: yes/no questions regarding user preferences (do u like ramen? | are u allergic to peanuts?) + if not, what? (user can provide a text)
 
