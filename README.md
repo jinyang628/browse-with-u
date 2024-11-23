@@ -16,9 +16,7 @@ pnpm dev # Start the development server
 ```bash
 pnpm build # Build the extension
 
-# Rename the .output folder to dist
-
-# Unpack the extension in your browser
+# Unpack the dist folder in your browser extensions page
 ```
 
 ### Hackathon Deliverables
