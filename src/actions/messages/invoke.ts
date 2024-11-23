@@ -7,6 +7,15 @@ import {
 } from "@/types/actions/messages/invoke";
 import { logger } from "@/lib/logger";
 import { invokeClaudeAPI } from "../llm/cluade";
+import { PageStateHistory } from "@/types/state/history";
+import {
+  addHistory,
+  addWebpage,
+  getHistoryBySessionId,
+  History,
+  POST,
+  Webpage,
+} from "@/stores/supabase";
 import { PageState } from "@/types/page";
 
 export const prompt = `You are an expert at identifying what users are trying to do when they are browsing the web.
@@ -77,7 +86,27 @@ export async function invoke(
 ): Promise<InvokeResponse | void> {
   try {
     logger.info(`Invoke request initiated`);
-    console.log(input);
+    logger.info(input.pageState.textContent);
+    const webpage: Webpage = {
+      url: input.pageState.url,
+      page_data: input.pageState.textContent,
+      base64_image: input.pageState.screenshot,
+      response: null,
+      session_id: 1, // Hard coded for now
+    };
+    const webpages: Webpage[] = await POST("webpages", [webpage]);
+    console.log(webpages);
+    // const webpage_id: number = await addWebpage(webpage);
+    // Update history
+    // const history: History | null = await getHistoryBySessionId();
+    // if (!history) {
+    //   await addHistory({
+    //     session_id: 1,
+
+    //   })
+    // }
+    // console.log("help", history);
+
     // TODO: Database, LLM, etc.
     // const response =
     // const invokeResponse = invokeResponseSchema.parse(response.data);
@@ -86,11 +115,11 @@ export async function invoke(
       .replace("{url}", input.pageState.url)
     console.log(formatted_pages);
 //    const response = await invokeClaudeAPI(final_prompt);
+      .replace("{textContent}", input.pageState.textContent);
+    const final_response = await invokeClaudeAPI(final_prompt);
 
-    // logger.info(`Invoke response received ${response}`);
-
-    // TODO: Revert the return shape to not have void
-    // return invokeResponse;
+    const invokeResponse = { response: final_response.text };
+    return invokeResponse;
   } catch (error: unknown) {
     logger.error(`Invoke error: ${error}`);
     throw error;

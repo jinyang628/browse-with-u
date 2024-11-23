@@ -12,6 +12,7 @@ export default function InjectedBase() {
   const [isChatContainerVisible, setIsChatContainerVisible] =
     useState<boolean>(false);
   const [isRendered, setIsRendered] = useState<boolean>(false);
+  const [latestResponse, setLatestResponse] = useState<string>("");
   const { recordingState, setRecordingState } = useRecordingStore();
 
   useEffect(() => {
@@ -29,6 +30,9 @@ export default function InjectedBase() {
       pageState: pageState,
     });
     const invokeResponse = await invoke(invokeRequest);
+    if (invokeResponse) {
+      setLatestResponse(invokeResponse.response);
+    }
     return invokeResponse;
   };
 
@@ -70,6 +74,7 @@ export default function InjectedBase() {
   if (isChatContainerVisible) {
     return (
       <ChatContainer
+        latestResponse={latestResponse}
         isVisible={isChatContainerVisible}
         isRecording={recordingState.isRecording}
         onContainerClose={() => {
