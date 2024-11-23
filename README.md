@@ -40,13 +40,13 @@ Use case (need to come up with more)
 
 P0 Core functionalities
 
-- store list of 10 most recent page states from user browsing (STM)
+- store list of 10 most recent page states from user browsing (STM) (DONE)
 - store user-defined information (LTM) (DONE)
   > LTM is a single string
-- identify objectives
+- identify objectives (IN PROGRESS)
   > input: list of page states,
   > output: objective of the user
-- give suggestions to objectives based on LTM and STM
+- give suggestions to objectives based on LTM and STM (IN PROGRESS)
   > input: objective, LTM, STM
   > output: suggestions
 
