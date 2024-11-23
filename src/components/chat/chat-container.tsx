@@ -4,11 +4,14 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
+import { useQueries } from "@tanstack/react-query";
+import { getUserById, User } from "@/stores/supabase";
 import { logger } from "@/lib/logger";
 
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +37,7 @@ export function ChatContainer() {
       <div className="flex flex-col w-full h-full">
         <div className="px-4 py-3 flex justify-between items-center border-b dark:border-gray-700">
           <h1 className="font-semibold text-gray-900 dark:text-white">
-            Web Companion
+            Browzy
           </h1>
           <Button
             variant="ghost"

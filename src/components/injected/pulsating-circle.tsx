@@ -24,7 +24,7 @@ export default function PulsatingCircle({
   if (!isVisible) return null;
 
   return (
-    <div className="relative w-16 h-16">
+    <div className="relative w-16 h-16 rounded-full">
       <motion.div
         className="absolute inset-0 rounded-full bg-yellow-400 opacity-50"
         animate={{
