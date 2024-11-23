@@ -48,6 +48,7 @@ const shadowRootOptions: ShadowRootContentScriptUiOptions<any> = {
     window.addEventListener("message", async (event) => {
       if (event.source !== window) return;
 
+      console.log("Message received", event);
       const screenshotParseResult = screenshotRequestSchema.safeParse(
         event.data,
       );

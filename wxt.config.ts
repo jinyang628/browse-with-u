@@ -13,7 +13,6 @@ export default defineConfig({
       "background",
       "webNavigation",
       "storage",
-      "accessibility",
       "scripting",
       "downloads", 
       "cookies",
