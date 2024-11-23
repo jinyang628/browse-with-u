@@ -36,14 +36,15 @@ export default function PdfUpload({
               return;
             }
             const file: File = event.target.files[0];
-  
+
             const imageSrc: string = await getDocumentImageSrc(file);
-  
+
             // Extract text from PDF
             const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer })
+              .promise;
             let fullText = "";
-  
+
             for (let i = 1; i <= pdf.numPages; i++) {
               const page = await pdf.getPage(i);
               const textContent = await page.getTextContent();
@@ -63,7 +64,6 @@ export default function PdfUpload({
           } finally {
             setIsLoading(false);
           }
-          
         }}
       />
       {isLoading && (

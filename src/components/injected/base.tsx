@@ -121,7 +121,9 @@ export default function InjectedBase() {
   }
 
   return (
-    <div className={`fixed inset-0 pointer-events-none ${unseenMessageExist ? "animate-subtle-bounce" : ""}`}>
+    <div
+      className={`fixed inset-0 pointer-events-none ${unseenMessageExist ? "animate-subtle-bounce" : ""}`}
+    >
       {/* <div className="absolute bottom-11 right-11">
         <TogglableSpeechBubble text={"!!!"} isVisible={unseenMessageExist} />
       </div> */}

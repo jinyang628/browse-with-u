@@ -57,6 +57,7 @@ pnpm build # Build the extension
   > user searches for "food near me"
   > popup shows "ramen nagi is 50 meters away from you, does not have peanuts" (based on LTM that user loves ramen and is allergic to peanuts)
 - user is filling up a job application for supabase and agent gives recommendations
+
   > user is on the page for "job application for supabase"
   > popup returns resume in bullet points and user can easily crtl-c and crtl-v
 
