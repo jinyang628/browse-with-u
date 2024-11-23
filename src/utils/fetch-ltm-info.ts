@@ -1,7 +1,13 @@
 import { GET } from "@/stores/supabase";
 
-export const fetchLtmInfo = async (): Promise<Record<string, any>> => {
-  const users = await GET<"users">("users", { id: 1 });
+export const fetchLtmInfo = async (
+  user_id: number = 1,
+): Promise<Record<string, any>> => {
+  // Example usage
+  // const data = await fetchLtmInfo();
+  // console.log(data);
+
+  const users = await GET<"users">("users", { id: user_id });
   if (!users || users.length < 1 || users.length > 1) {
     throw new Error("Invalid user data");
   }
