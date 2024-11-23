@@ -40,18 +40,13 @@ Use case (need to come up with more)
 
 P0 Core functionalities
 
-- store list of 10 most recent page states from user browsing (STM)
-- store user-defined information (LTM) (DONE)
-  > LTM is a single string
-- identify objectives
-  > input: list of page states,
-  > output: objective of the user
-- give suggestions to objectives based on LTM and STM
-  > input: objective, LTM, STM
-  > output: suggestions
+- STM: list of page states
+- LTM: a single string
+- Objective identification: return objective from list of page states  (input: STM | output: objective)
+- Output suggestion from popup (input: LTM STM Objective | output Suggestion)
 
 P0 demo:
-
+- user is loooking through dmv websites and agent returns "the 3 main steps to get a california driver's license is ABC"
 - user is looking for food and agent finds him food that fits his itinerary and preferences (allergies etc)
   > user searches for "food near me"
   > popup shows "ramen nagi is 50 meters away from you, does not have peanuts" (based on LTM that user loves ramen and is allergic to peanuts)
@@ -60,11 +55,15 @@ P0 demo:
   > popup returns resume in bullet points and user can easily crtl-c and crtl-v
 
 P1/P2
+- We have a function that extracts domain andquery params from url (cut size of url)
+- page states store url params and domain instead of entire url
+- chat interface for user to input objectives (complete)
 
 preprocessing:
 
 - We have a function that extracts domain and query params from url/trims the url of unnecessary content (DONE)
 - page states store url params and domain instead of entire url (DONE)
+
 - Agent has a functional window of recent page states.
 - Agent can add things to LTM using user's answers to preference questions
 - Agent can identify if user is in scrolling mode (dont track page states)
