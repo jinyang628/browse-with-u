@@ -4,15 +4,18 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
-import { useQueries } from "@tanstack/react-query";
-import { getUserById, User } from "@/stores/supabase";
 import { logger } from "@/lib/logger";
 
+type ChatContainerProps = {
+  isVisible: boolean;
+  onContainerClose: () => void;
+};
 
-export function ChatContainer() {
+export function ChatContainer({
+  isVisible,
+  onContainerClose,
+}: ChatContainerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [user, setUser] = useState<User | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +47,7 @@ export function ChatContainer() {
             variant="ghost"
             size="icon"
             className="text-gray-500 dark:text-gray-400"
-            onClick={() => setIsVisible(false)}
+            onClick={onContainerClose}
           >
             <X size={20} />
           </Button>

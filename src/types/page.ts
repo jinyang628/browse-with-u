@@ -2,13 +2,13 @@ import { z } from "zod";
 
 export const pageStateSchema = z.object({
   url: z.string(),
-  atree: z.record(z.any()),
+  textContent: z.string(),
   screenshot: z.string(),
 });
 
 export const defaultPageState: PageState = {
   url: "",
-  atree: {},
+  textContent: "",
   screenshot: "",
 };
 
