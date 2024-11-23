@@ -14,16 +14,17 @@ export const UserDataForm: React.FC = () => {
     phone: "",
     location: "",
     nationality: "",
-    languages: [],
+    languages: "",
     health_conditions: "",
-    fitness_goals: [],
+    fitness_goals: "",
     sleep_hours: 8,
     occupation: "",
     industry: "",
-    skills: [],
-    hobbies: [],
-    food: [],
-    goals: [],
+    skills: "",
+    hobbies: "",
+    food: "",
+    goals: "",
+    allergies: "",
   });
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export const UserDataForm: React.FC = () => {
     };
     getUser();
   }, []);
+
   const handleChange =
     (field: keyof User) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setUserData({
@@ -124,7 +126,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="languages"
                 type="text"
-                value={userData.languages || []}
+                value={userData.languages || ""}
                 onChange={handleChange("languages")}
                 placeholder="Enter your languages"
               />
@@ -143,11 +145,22 @@ export const UserDataForm: React.FC = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="allergies">Allergies</Label>
+              <Input
+                id="allergies"
+                type="text"
+                value={userData.allergies || ""}
+                onChange={handleChange("allergies")}
+                placeholder="Enter your allergies"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="fitnessGoals">Fitness Goals</Label>
               <Input
                 id="fitnessGoals"
                 type="text"
-                value={userData.fitness_goals || []}
+                value={userData.fitness_goals || ""}
                 onChange={handleChange("fitness_goals")}
                 placeholder="Enter your fitness goals"
               />
@@ -192,7 +205,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="skills"
                 type="text"
-                value={userData.skills || []}
+                value={userData.skills || ""}
                 onChange={handleChange("skills")}
                 placeholder="Enter your skills"
               />
@@ -206,7 +219,7 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="location">Hobbies</Label>
               <Input
                 id="hobbies"
-                value={userData.hobbies || []}
+                value={userData.hobbies || ""}
                 onChange={handleChange("hobbies")}
                 placeholder="Enter your hobbies"
               />
@@ -217,7 +230,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="food"
                 type="text"
-                value={userData.food || []}
+                value={userData.food || ""}
                 onChange={handleChange("food")}
                 placeholder="Enter your food"
               />
@@ -228,7 +241,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="goals"
                 type="text"
-                value={userData.goals || []}
+                value={userData.goals || ""}
                 onChange={handleChange("goals")}
                 placeholder="Enter your goals"
               />

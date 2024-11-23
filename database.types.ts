@@ -66,6 +66,7 @@ export type Database = {
       };
       users: {
         Row: {
+          allergies: string[] | null;
           created_at: string;
           data: string | null;
           data_vector: string | null;
@@ -89,6 +90,7 @@ export type Database = {
           sleep_hours: number | null;
         };
         Insert: {
+          allergies?: string[] | null;
           created_at?: string;
           data?: string | null;
           data_vector?: string | null;
@@ -112,6 +114,7 @@ export type Database = {
           sleep_hours?: number | null;
         };
         Update: {
+          allergies?: string[] | null;
           created_at?: string;
           data?: string | null;
           data_vector?: string | null;
