@@ -34,14 +34,14 @@ export function RecordingStatusBadge({
       {isRecording ? (
         <div
           onClick={onPauseButtonClick}
-          className="w-5 h-5 p-1 bg-black text-white rounded-xs rounded-full cursor-pointer"
+          className="w-5 h-5 p-1 bg-black dark:bg-white text-white dark:text-black rounded-xs rounded-full cursor-pointer"
         >
           <Pause size={11} />
         </div>
       ) : (
         <div
           onClick={onPlayButtonClick}
-          className="w-5 h-5 p-1 bg-black text-white rounded-full cursor-pointer"
+          className="w-5 h-5 p-1 bg-black dark:bg-white text-white dark:text-black rounded-full cursor-pointer"
         >
           <Play size={11} />
         </div>
