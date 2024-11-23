@@ -72,8 +72,7 @@ export async function extractProfileFromPdf(data: string) {
   const { openAiKey } = await browser.storage.sync.get("openAiKey");
   const openai = new OpenAI({
     dangerouslyAllowBrowser: true,
-    apiKey:
-    openAiKey,
+    apiKey: openAiKey,
   });
 
   const final_prompt = USER_PROMPT.replace("{user_data}", data);

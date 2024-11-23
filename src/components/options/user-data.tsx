@@ -38,23 +38,23 @@ export const UserDataForm: React.FC = () => {
 
   const useTypewriter = (text: string, speed: number = 50) => {
     const [displayText, setDisplayText] = useState("");
-  
+
     useEffect(() => {
       let i = -1;
       if (!text) return;
-      
+
       const typing = setInterval(() => {
         if (i < text.length) {
-          setDisplayText(prev => prev + text.charAt(i));
+          setDisplayText((prev) => prev + text.charAt(i));
           i++;
         } else {
           clearInterval(typing);
         }
       }, speed);
-  
+
       return () => clearInterval(typing);
     }, [text, speed]);
-  
+
     return displayText;
   };
 
