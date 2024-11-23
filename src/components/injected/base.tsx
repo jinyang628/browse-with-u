@@ -48,7 +48,6 @@ export default function InjectedBase() {
         }
 
         setRecordingState({ isRecording: newIsRecording, url: newUrl });
-
       }
     };
 

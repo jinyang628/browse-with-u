@@ -25,7 +25,7 @@ export const UserDataForm: React.FC = () => {
     food: [],
     goals: [],
   });
-  
+
   useEffect(() => {
     const getUser = async () => {
       const user = await getUserById(1);
