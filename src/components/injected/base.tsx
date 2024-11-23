@@ -26,6 +26,7 @@ export default function InjectedBase() {
 
   const getUrlHistory = (): UrlHistory[] => {
     const history = localStorage.getItem('urlHistory');
+    console.log('history', history);
     return history ? JSON.parse(history) : [];
   };
 

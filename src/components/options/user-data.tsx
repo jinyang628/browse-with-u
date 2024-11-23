@@ -3,11 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-<<<<<<< Updated upstream
-import { GET, UPDATE, UserData } from "@/stores/supabase";
-=======
 import { GET, UPDATE, User } from "@/stores/supabase";
->>>>>>> Stashed changes
 
 export const UserDataForm: React.FC = () => {
   const [userData, setUserData] = useState<Partial<User>>({
@@ -32,15 +28,9 @@ export const UserDataForm: React.FC = () => {
 
   useEffect(() => {
     const getUser = async () => {
-<<<<<<< Updated upstream
       const users = await GET<"users">("users", { id: 1 });
       if (users && users.length > 0) {
         setUserData(users[0]);
-=======
-      const user = await GET('users', { id: 1 });
-      if (user) {
-        setUserData(user[0]);
->>>>>>> Stashed changes
       }
     };
     getUser();
@@ -54,12 +44,7 @@ export const UserDataForm: React.FC = () => {
     };
 
   const handleSubmit = () => {
-<<<<<<< Updated upstream
     UPDATE<"users">("users", { id: 1 }, userData);
-    updateUserData(userData);
-=======
-    UPDATE('users', { id: 1 }, userData);
->>>>>>> Stashed changes
   };
 
   return (
