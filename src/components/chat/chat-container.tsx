@@ -4,7 +4,6 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
-import { useQueries } from "@tanstack/react-query";
 import { getUserById, User } from "@/stores/supabase";
 import { logger } from "@/lib/logger";
 
@@ -14,17 +13,6 @@ export function ChatContainer() {
   const [user, setUser] = useState<User | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // TODO: This is just to test whether the api key is set, we should access it directly in the agent layer logic instead
-  useEffect(() => {
-    const retrieveApiKey = async () => {
-      const result = await browser.storage.sync.get("apiKey");
-      const pageState = await getCurrentPageState();
-      console.log(result.apiKey);
-      console.log(pageState);
-    };
-    retrieveApiKey();
-  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
