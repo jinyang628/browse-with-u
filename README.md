@@ -1,12 +1,22 @@
-# browse-with-u
+# browse-with-u (Browzy)
 
 An AI companion that browses the web WITH you, not for you.
 
+The whole world is chasing after async agents that automate tasks without human involvement. Browzy takes a different approach by integrating AI capabilities into the existing human action flow. Think of it as a second pair of eyes that observes the webpage with you, providing you with personalized suggestions and recommendations based on your browsing history and preferences.
+
 ## How to run
 
+```bash
+pnpm i  # Install dependencies
+pnpm dev # Start the development server
 ```
-pnpm i
-pnpm dev
+
+## How to build and unpack the extension in your browser
+
+```bash
+pnpm build # Build the extension
+
+# Unpack the dist folder in your browser extensions page
 ```
 
 ### Hackathon Deliverables
@@ -85,3 +95,17 @@ long term memory is user defined + user-added information based on preference qu
 
 preference questions: yes/no questions to user preferences (do u like ramen? | are u allergic to peanuts?)
 add-on: if not, what isit? (user can provide a text)
+
+### Credits
+
+[PNG Resizer](https://onlinepngtools.com/resize-png)
+
+[Supabase](https://supabase.com/)
+
+[Anthropic](https://www.anthropic.com/)
+
+[OpenAI](https://openai.com/)
+
+[WXT](https://wxt.dev/)
+
+We used the React started template from [wxt-dev](https://github.com/wxt-dev/wxt/tree/main/templates/)
