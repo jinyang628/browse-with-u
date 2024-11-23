@@ -46,17 +46,17 @@ User's preferences:
  */
 function parsePageStates(url: string): string | null {
   try {
-      // Create URL object
-      const urlObj = new URL(url);
-      
-      // Get the 'q' parameter
-      const searchQuery = urlObj.searchParams.get('q');
-      
-      // Return the decoded query or null if not found
-      return searchQuery;
+    // Create URL object
+    const urlObj = new URL(url);
+
+    // Get the 'q' parameter
+    const searchQuery = urlObj.searchParams.get("q");
+
+    // Return the decoded query or null if not found
+    return searchQuery;
   } catch (error) {
-      console.error('Error parsing URL:', error);
-      return null;
+    console.error("Error parsing URL:", error);
+    return null;
   }
 }
 
@@ -73,7 +73,6 @@ export async function invoke(
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent);
     const response = await invokeClaudeAPI(final_prompt);
-
 
     // logger.info(`Invoke response received ${response}`);
 
