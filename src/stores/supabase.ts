@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { Database, Tables } from "@/stores/database.types";
+import { getEmbedding } from "@/actions/embeddings/embed";
 
 let supabaseClient: SupabaseClient | null = null;
 
@@ -48,4 +49,15 @@ export async function AddWebpage(webpage: Webpage) {
 export async function updateWebpage(webpage: Webpage) {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase.from("webpages").update(webpage);
+}
+
+export async function findSimilarUserData(query: string) {
+  const embedding = await getEmbedding(query);
+  const supabase = await getSupabaseClient();
+  const { data: documents } = await supabase.rpc("user_vector_search", {
+    query_embedding: embedding, // pass the query embedding
+    match_count: 1, // choose the number of matches
+    similarity_threshold: 0.4, // choose an appropriate threshold for your data
+  });
+  return documents;
 }

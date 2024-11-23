@@ -1,7 +1,7 @@
 import { getEmbedding } from "@/actions/embeddings/embed";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getUserById, User } from "@/stores/supabase";
+import { findSimilarUserData, getUserById, User } from "@/stores/supabase";
 
 export default function App() {
   const [apiKey, setApiKey] = useState<string>("");
@@ -16,15 +16,6 @@ export default function App() {
     };
     getUser();
   }, []);
-
-  useEffect(() => {
-    const embedText = async () => {
-      const embedding = await getEmbedding("He likes to go eat Ramen");
-      console.log(embedding);
-    };
-    embedText();
-  }, []);
-  console.log("user", user);
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
