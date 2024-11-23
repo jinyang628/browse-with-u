@@ -28,7 +28,8 @@ export async function invokeClaudeAPI(query: string): Promise<any> {
       messages: [{ role: "user", content: query }],
     });
 
-    logger.info("Claude API response received");
+    console.log("result", result);
+    logger.info(`Claude API response received ${result}`);
     return result;
   } catch (error) {
     logger.error(`Claude API error: ${error}`);
