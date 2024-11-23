@@ -9,18 +9,12 @@ export interface AnalysisType {
 }
 
 const ANALYSIS_PROMPT = `Look at the user's webpage history by an user and find if there are visual patterns 
-about the user's intents and behaviors. You should only return a JSON with keys 'relevant' and 'url'. The word 
-count should be less than 25 words:
+about the user's intents and behaviors. You should only return a topic user is interested in using less than 8 words
 
 URLs and content: {context}
 
-Identify patterns and return a JSON with:
-{
-  "relevant": boolean, 
-  "url": string, 
-}
+Identify patterns and return the topic.
 
-the 'url' in the output should be one of the URLs in the context.
 
 Focus on finding meaningful patterns like:
 - Common subject matter or themes
@@ -29,10 +23,7 @@ Focus on finding meaningful patterns like:
 - Content format patterns (tutorials, product pages, documentation)
 
 GOOD RESPONSE:
-If an user has been browsing a lot of jobs sites, it means they could be looking for a job. 
-So that's a pattern worth remembering. In this case, is_relevant would be true.
-
-If no clear pattern exists, set is_relevant to false.`;
+If an user has been browsing a lot of jobs sites, it means they could be looking for a job.`;
 
 export async function analyzeNewWebpages() {
   try {

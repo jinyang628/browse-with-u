@@ -27,6 +27,7 @@ export default function InjectedBase() {
   const { recordingState, setRecordingState } = useRecordingStore();
   const [messages, setMessages] = useState<Message[]>([]);
   const [unseenMessageExist, setUnseenMessageExist] = useState(false);
+  const [longTermMemory, setLongTermMemory] = useState<string>("");
 
   useEffect(() => {
     setIsRendered(true);
@@ -62,7 +63,9 @@ export default function InjectedBase() {
 
     setTimeout(async () => {
       const analysis = await analyzeNewWebpages().catch(err => logger.error("Failed to analyze pages:", err));
-      console.log('analysis on FE', analysis);
+      if (analysis) {
+      setLongTermMemory(analysis);
+      }
     }, 0);
 
 
@@ -123,6 +126,8 @@ export default function InjectedBase() {
         onMessagesUpdate={(messages) => {
           setMessages(messages);
         }}
+        longTermMemory={longTermMemory}
+        setLongTermMemory={setLongTermMemory}
       />
     );
   }
