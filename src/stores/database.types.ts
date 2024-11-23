@@ -40,22 +40,70 @@ export type Database = {
           created_at: string;
           data: string | null;
           data_vector: string | null;
+          date_of_birth: string | null;
+          email: string | null;
+          fitness_goals: string[] | null;
+          food: string[] | null;
+          gender: string | null;
+          goals: string[] | null;
+          health_conditions: string | null;
+          hobbies: string[] | null;
           id: number;
+          industry: string | null;
+          languages: string[] | null;
+          location: string | null;
           name: string | null;
+          nationality: string | null;
+          occupation: string | null;
+          phone: string | null;
+          skills: string[] | null;
+          sleep_hours: number | null;
         };
         Insert: {
           created_at?: string;
           data?: string | null;
           data_vector?: string | null;
+          date_of_birth?: string | null;
+          email?: string | null;
+          fitness_goals?: string[] | null;
+          food?: string[] | null;
+          gender?: string | null;
+          goals?: string[] | null;
+          health_conditions?: string | null;
+          hobbies?: string[] | null;
           id?: number;
+          industry?: string | null;
+          languages?: string[] | null;
+          location?: string | null;
           name?: string | null;
+          nationality?: string | null;
+          occupation?: string | null;
+          phone?: string | null;
+          skills?: string[] | null;
+          sleep_hours?: number | null;
         };
         Update: {
           created_at?: string;
           data?: string | null;
           data_vector?: string | null;
+          date_of_birth?: string | null;
+          email?: string | null;
+          fitness_goals?: string[] | null;
+          food?: string[] | null;
+          gender?: string | null;
+          goals?: string[] | null;
+          health_conditions?: string | null;
+          hobbies?: string[] | null;
           id?: number;
+          industry?: string | null;
+          languages?: string[] | null;
+          location?: string | null;
           name?: string | null;
+          nationality?: string | null;
+          occupation?: string | null;
+          phone?: string | null;
+          skills?: string[] | null;
+          sleep_hours?: number | null;
         };
         Relationships: [];
       };
@@ -102,7 +150,20 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      user_vector_search: {
+        Args: {
+          query_embedding: string;
+          similarity_threshold: number;
+          match_count: number;
+        };
+        Returns: {
+          id: number;
+          name: string;
+          data: string;
+          created_at: string;
+          similarity: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

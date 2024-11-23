@@ -74,7 +74,8 @@ export async function invoke(
       .replace("{textContent}", input.pageState.textContent);
     const response = await invokeClaudeAPI(final_prompt);
 
-    logger.info(`Invoke response received ${response}`);
+
+    // logger.info(`Invoke response received ${response}`);
 
     // TODO: Revert the return shape to not have void
     // return invokeResponse;
