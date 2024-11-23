@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Message } from "@/types/messages/base";
+import { Message, roleSchema } from "@/types/messages/base";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
@@ -7,45 +7,74 @@ import { logger } from "@/lib/logger";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { RecordingStatusBadge } from "@/components/injected/recording-status-badge";
+import { askRequestSchema } from "@/types/actions/messages/ask";
+import { getCurrentPageState } from "@/utils/pagestate/get";
+import { ask } from "@/actions/messages/ask";
 
 type ChatContainerProps = {
+  messages: Message[];
   isVisible: boolean;
   isRecording: boolean;
-  latestResponse: string;
   onContainerClose: () => void;
   onPlayButtonClick: () => void;
   onPauseButtonClick: () => void;
-};
-
-type ChatMessage = {
-  content: string;
-  role: "user" | "assistant";
+  onMessagesUpdate: (messages: Message[]) => void;
 };
 
 export function ChatContainer({
+  messages,
   isVisible,
   isRecording,
-  latestResponse,
   onContainerClose,
   onPlayButtonClick,
   onPauseButtonClick,
+  onMessagesUpdate,
 }: ChatContainerProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    setMessages([...messages, { content: latestResponse, role: "assistant" }]);
-  }, [latestResponse]);
+  const handleSendMessage = async () => {
+    if (inputValue.trim() === "" || isLoading) return;
+    setIsLoading(true);
 
-  console.log("latestResponse", latestResponse);
+    try {
+      // Create new array with user message
+      const userMessage = {
+        content: inputValue,
+        role: roleSchema.Values.user,
+      };
+      const updatedMessages = [...messages, userMessage];
 
-  const handleSendMessage = () => {
-    if (inputValue.trim() === "") return;
-    logger.info("Sending message");
-    setMessages([...messages, { content: inputValue, role: "user" }]);
-    setInputValue("");
-    console.log(messages);
+      // Update messages immediately with user input
+      onMessagesUpdate(updatedMessages);
+      setInputValue("");
+
+      // Get page state and send request
+      const pageState = await getCurrentPageState();
+      const askRequest = askRequestSchema.parse({
+        prompt: inputValue,
+        pageState: pageState,
+      });
+
+      const askResponse = await ask(askRequest);
+
+      // Create final messages array with assistant response
+      const assistantMessage = {
+        content: askResponse.response,
+        role: roleSchema.Values.assistant,
+      };
+      const finalMessages = [...updatedMessages, assistantMessage];
+
+      // Update with final messages including assistant response
+      onMessagesUpdate(finalMessages);
+      logger.info("Updated messages", finalMessages);
+    } catch (error) {
+      logger.error("Error sending message:", error);
+      // Optionally add error handling UI here
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -91,7 +120,11 @@ export function ChatContainer({
           {messages.map((message, index) => (
             <div
               key={index}
-              className="max-w-[80%] px-3 py-2 rounded-lg break-words bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 self-start rounded-bl-none"
+              className={`max-w-[80%] px-3 py-2 rounded-lg break-words ${
+                message.role === roleSchema.Values.user
+                  ? "bg-blue-500 text-white self-end rounded-br-none"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 self-start rounded-bl-none"
+              }`}
             >
               {message.content}
             </div>

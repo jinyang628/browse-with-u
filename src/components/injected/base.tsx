@@ -3,6 +3,7 @@ import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
 import { logger } from "@/lib/logger";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
+import { Message, roleSchema } from "@/types/messages/base";
 import { PageState } from "@/types/page";
 import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
@@ -22,22 +23,8 @@ export default function InjectedBase() {
   const [isChatContainerVisible, setIsChatContainerVisible] =
     useState<boolean>(false);
   const [isRendered, setIsRendered] = useState<boolean>(false);
-  const [latestResponse, setLatestResponse] = useState<string>("");
   const { recordingState, setRecordingState } = useRecordingStore();
-
-  // useEffect(() => {
-  //   const getHistory = async () => {
-  //     const previousHistory = await getUrlHistory();
-  //     saveUrlHistory(
-  //       [
-  //         ...previousHistory,
-  //         { url: "test3", textContent: "hello" },
-  //       ].slice(-10),
-  //     );
-  //     const history = await getUrlHistory();
-  //   };
-  //   getHistory();
-  // }, [recordingState]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     setIsRendered(true);
@@ -55,9 +42,10 @@ export default function InjectedBase() {
     });
 
     const invokeResponse = await invoke(invokeRequest);
-    if (invokeResponse) {
-      setLatestResponse(invokeResponse.response);
-    }
+    setMessages([
+      ...messages,
+      { content: invokeResponse.response, role: roleSchema.Values.assistant },
+    ]);
 
     const newHistoryEntry: Partial<PageState> = {
       url: pageState.url,
@@ -108,7 +96,7 @@ export default function InjectedBase() {
   if (isChatContainerVisible) {
     return (
       <ChatContainer
-        latestResponse={latestResponse}
+        messages={messages}
         isVisible={isChatContainerVisible}
         isRecording={recordingState.isRecording}
         onContainerClose={() => {
@@ -121,6 +109,9 @@ export default function InjectedBase() {
         onPauseButtonClick={() => {
           logger.info("Pause button clicked");
           setRecordingState({ ...recordingState, isRecording: false });
+        }}
+        onMessagesUpdate={(messages) => {
+          setMessages(messages);
         }}
       />
     );

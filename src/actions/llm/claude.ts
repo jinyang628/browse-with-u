@@ -8,7 +8,7 @@ interface ClaudeMessage {
   content: string;
 }
 
-export async function invokeClaudeAPI(query: string): Promise<any> {
+export async function invokeClaudeAPI(query: string): Promise<string> {
   try {
     const { apiKey } = await browser.storage.sync.get("apiKey");
 

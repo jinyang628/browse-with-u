@@ -1,5 +1,3 @@
-import browser from "webextension-polyfill";
-
 import {
   InvokeRequest,
   InvokeResponse,
@@ -7,8 +5,7 @@ import {
 } from "@/types/actions/messages/invoke";
 import { logger } from "@/lib/logger";
 import { invokeClaudeAPI } from "../llm/claude";
-import { PageStateHistory } from "@/types/state/history";
-import { History, POST, Webpage } from "@/stores/supabase";
+import { POST, Webpage } from "@/stores/supabase";
 import { getUrlHistory } from "@/components/injected/base";
 import { formatHistory } from "@/utils/pagestate/format-history";
 
@@ -47,30 +44,7 @@ User's preferences:
 - dietary restrictions: none
 `;
 
-/**
- * takes in a list of pageStates and returns a formatted string of the pageStates
- * @param url - The URL to parse
- * @returns The decoded search query string if found, null otherwise
- */
-function parsePageStates(url: string): string | null {
-  try {
-    // Create URL object
-    const urlObj = new URL(url);
-
-    // Get the 'q' parameter
-    const searchQuery = urlObj.searchParams.get("q");
-
-    // Return the decoded query or null if not found
-    return searchQuery;
-  } catch (error) {
-    console.error("Error parsing URL:", error);
-    return null;
-  }
-}
-
-export async function invoke(
-  input: InvokeRequest,
-): Promise<InvokeResponse | void> {
+export async function invoke(input: InvokeRequest): Promise<InvokeResponse> {
   try {
     logger.info(`Invoke request initiated`);
     logger.info(input.pageState.textContent);
@@ -94,8 +68,7 @@ export async function invoke(
 
     const final_response = await invokeClaudeAPI(final_prompt);
 
-    console.log(final_response);
-    const invokeResponse = { response: final_response.text };
+    const invokeResponse = { response: final_response };
     return invokeResponse;
   } catch (error: unknown) {
     logger.error(`Invoke error: ${error}`);
