@@ -27,7 +27,18 @@ export default function InjectedBase() {
 
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "l") {
         e.preventDefault();
-				setRecordingState({ ...recordingState, isRecording: !recordingState.isRecording });
+        const newIsRecording = !recordingState.isRecording;
+        const newUrl = window.location.href;
+
+        if (recordingState.url === newUrl) {
+          setRecordingState({ isRecording: newIsRecording, url: newUrl });
+          return;
+        }
+
+        setRecordingState({ isRecording: newIsRecording, url: newUrl });
+        if (!recordingState.isRecording) return;
+
+        handleRecording();
       }
     };
 
@@ -35,25 +46,14 @@ export default function InjectedBase() {
     return () => window.removeEventListener("keydown", handleKeyDown, true);
   }, []);
 
-  // Handle recording
-  useEffect(() => {
-    if (recordingState.url === window.location.href) return; // Don't record if the URL hasn't changed
-
-    setRecordingState({ ...recordingState, url: window.location.href });
-
-    if (!recordingState.isRecording) return;
-
-    const handleRecording = async () => {
-      const pageState = await getCurrentPageState();
-      const invokeRequest = invokeRequestSchema.parse({
-        pageState: pageState,
-      });
-      const invokeResponse = await invoke(invokeRequest);
-      return invokeResponse;
-    };
-
-    handleRecording();
-  }, [recordingState.isRecording]);
+  const handleRecording = async () => {
+    const pageState = await getCurrentPageState();
+    const invokeRequest = invokeRequestSchema.parse({
+      pageState: pageState,
+    });
+    const invokeResponse = await invoke(invokeRequest);
+    return invokeResponse;
+  };
 
   if (!isRendered) return null;
 
@@ -67,6 +67,8 @@ export default function InjectedBase() {
       />
     );
   }
+
+  handleRecording();
 
   return (
     <PulsatingCircle
