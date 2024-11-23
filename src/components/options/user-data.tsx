@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { GET, UPDATE, User } from "@/stores/supabase";
-import { UserDetails } from "@/actions/llm/profileFuncCall";
 import PdfUpload from "@/components/options/pdf-upload";
 import { extractProfileFromPdf } from "@/actions/llm/profileFuncCall";
 
@@ -39,10 +38,12 @@ export const UserDataForm: React.FC = () => {
   const useTypewriter = (text: string, speed: number = 50) => {
     const [displayText, setDisplayText] = useState("");
 
+
     useEffect(() => {
       let i = -1;
-      if (!text) return;
-
+      if (!text) {
+        return;
+      }
       const typing = setInterval(() => {
         if (i < text.length) {
           setDisplayText((prev) => prev + text.charAt(i));
@@ -176,7 +177,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="languages"
                 type="text"
-                value={userData.languages || ""}
+                value={useTypewriter(userData.languages || "")}
                 onChange={handleChange("languages")}
                 placeholder="Enter your languages"
               />
@@ -188,7 +189,7 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="healthConditions">Health Conditions</Label>
               <Input
                 id="healthConditions"
-                value={userData.health_conditions || ""}
+                value={useTypewriter(userData.health_conditions || "")}
                 onChange={handleChange("health_conditions")}
                 placeholder="Enter your health conditions"
               />
@@ -199,7 +200,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="allergies"
                 type="text"
-                value={userData.allergies || ""}
+                value={useTypewriter(userData.allergies || "")}
                 onChange={handleChange("allergies")}
                 placeholder="Enter your allergies"
               />
@@ -210,7 +211,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="fitnessGoals"
                 type="text"
-                value={userData.fitness_goals || ""}
+                value={useTypewriter(userData.fitness_goals || "")}
                 onChange={handleChange("fitness_goals")}
                 placeholder="Enter your fitness goals"
               />
@@ -221,7 +222,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="sleepHours"
                 type="text"
-                value={userData.sleep_hours || ""}
+                value={useTypewriter(userData.sleep_hours || "")}
                 onChange={handleChange("sleep_hours")}
                 placeholder="Enter your sleep hours"
               />
@@ -233,7 +234,7 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="occupation">Occupation</Label>
               <Input
                 id="occupation"
-                value={userData.occupation || ""}
+                value={useTypewriter(userData.occupation || "")}
                 onChange={handleChange("occupation")}
                 placeholder="Enter your occupation"
               />
@@ -244,7 +245,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="industry"
                 type="text"
-                value={userData.industry || ""}
+                value={useTypewriter(userData.industry || "")}
                 onChange={handleChange("industry")}
                 placeholder="Enter your industry"
               />
@@ -255,7 +256,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="skills"
                 type="text"
-                value={userData.skills || ""}
+                value={useTypewriter(userData.skills || "")}
                 onChange={handleChange("skills")}
                 placeholder="Enter your skills"
               />
@@ -269,7 +270,7 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="location">Hobbies</Label>
               <Input
                 id="hobbies"
-                value={userData.hobbies || ""}
+                value={useTypewriter(userData.hobbies || "")}
                 onChange={handleChange("hobbies")}
                 placeholder="Enter your hobbies"
               />
@@ -280,7 +281,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="food"
                 type="text"
-                value={userData.food || ""}
+                value={useTypewriter(userData.food || "")}
                 onChange={handleChange("food")}
                 placeholder="Enter your food"
               />
@@ -291,7 +292,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="goals"
                 type="text"
-                value={userData.goals || ""}
+                value={useTypewriter(userData.goals || "")}
                 onChange={handleChange("goals")}
                 placeholder="Enter your goals"
               />
