@@ -27,6 +27,7 @@ the most efficient and concise way possible. Try to understand the user's intent
 
 <GOOD RESPONSES>
 - "There's a Ramen restaurant nearby  which you might like"
+- "Since you are <state specific user_details>, you might like <suggestion>"
 - "This link seems to have all the info."
 
 Above are good responses because they are concise and direct.
@@ -91,16 +92,20 @@ export async function invoke(
 
     const user_details = await fetchLtmInfo();
 
+
     const final_prompt = prompt
       .replace("{user_details}", JSON.stringify(user_details))
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent)
       .replace("{history}", formatted_history);
 
+    logger.info("final_prompt");
+    logger.info(final_prompt);
+
     const final_response = await invokeClaudeAPI(final_prompt);
 
-    logger.info("final_response");
-    logger.info(final_response);
+    logger.info("final_response_updated");
+    logger.info(final_response.text);
     const invokeResponse = { response: final_response.text };
     return invokeResponse;
   } catch (error: unknown) {
