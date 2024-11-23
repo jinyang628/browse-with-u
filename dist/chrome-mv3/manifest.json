@@ -17,12 +17,21 @@
     "background",
     "webNavigation",
     "storage",
-    "accessibility"
+    "accessibility",
+    "scripting"
   ],
-  "background": { "service_worker": "background.js" },
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
-    { "matches": ["<all_urls>"], "js": ["/content-scripts/content.js"] },
-    { "matches": ["<all_urls>"], "js": ["content-scripts/content.js"] }
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "/content-scripts/content.js"
+      ]
+    }
   ],
   "web_accessible_resources": [
     {
@@ -32,13 +41,41 @@
         "images/*.png",
         "injected.js"
       ],
-      "matches": ["*://*/*"]
+      "matches": [
+        "*://*/*"
+      ]
     },
-    { "resources": ["content-scripts/content.css"], "matches": ["<all_urls>"] }
+    {
+      "resources": [
+        "content-scripts/content.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ],
+  "commands": {
+    "wxt:reload-extension": {
+      "description": "Reload the extension during development",
+      "suggested_key": {
+        "default": "Alt+R"
+      }
+    }
+  },
   "action": {
     "default_title": "Default Popup Title",
     "default_popup": "popup.html"
   },
-  "options_ui": { "open_in_tab": true, "page": "options.html" }
+  "options_ui": {
+    "open_in_tab": true,
+    "page": "options.html"
+  },
+  "host_permissions": [
+    "<all_urls>",
+    "http://localhost/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:3000; object-src 'self';",
+    "sandbox": "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; sandbox allow-scripts allow-forms allow-popups allow-modals; child-src 'self';"
+  }
 }
