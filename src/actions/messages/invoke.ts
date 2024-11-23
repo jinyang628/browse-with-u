@@ -6,7 +6,7 @@ import {
   invokeResponseSchema,
 } from "@/types/actions/messages/invoke";
 import { logger } from "@/lib/logger";
-import { invokeClaudeAPI } from "../llm/cluade";
+import { invokeClaudeAPI } from "../llm/claude";
 import { PageStateHistory } from "@/types/state/history";
 import { History, POST, Webpage } from "@/stores/supabase";
 import { getUrlHistory } from "@/components/injected/base";
