@@ -21,11 +21,11 @@ export default function InjectedBase() {
   }, [isChatContainerVisible]);
 
   const saveUrlHistory = (history: UrlHistory[]) => {
-    localStorage.setItem('urlHistory', JSON.stringify(history));
+    localStorage.setItem("urlHistory", JSON.stringify(history));
   };
 
   const getUrlHistory = (): UrlHistory[] => {
-    const history = localStorage.getItem('urlHistory');
+    const history = localStorage.getItem("urlHistory");
     return history ? JSON.parse(history) : [];
   };
 
@@ -39,18 +39,18 @@ export default function InjectedBase() {
     const invokeRequest = invokeRequestSchema.parse({
       pageState: pageState,
     });
-    
+
     const invokeResponse = await invoke(invokeRequest);
     if (invokeResponse) {
       setLatestResponse(invokeResponse.response);
     }
 
     const currentHistory = getUrlHistory();
-      const newHistoryEntry: UrlHistory = {
-        url: window.location.href,
-        response: invokeResponse?.response || "",
-        timestamp: Date.now(),
-      };
+    const newHistoryEntry: UrlHistory = {
+      url: window.location.href,
+      response: invokeResponse?.response || "",
+      timestamp: Date.now(),
+    };
 
     const updatedHistory = [...currentHistory, newHistoryEntry].slice(-10);
     saveUrlHistory(updatedHistory);
