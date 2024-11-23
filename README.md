@@ -91,9 +91,13 @@ add-on: if not, what isit? (user can provide a text)
 ### Credits
 
 [PNG Resizer](https://onlinepngtools.com/resize-png)
+
 [Supabase](https://supabase.com/)
+
 [Anthropic](https://www.anthropic.com/)
+
 [OpenAI](https://openai.com/)
+
 [WXT](https://wxt.dev/)
 
-- We used the React started template from [wxt-dev](https://github.com/wxt-dev/wxt/tree/main/templates/)
+We used the React started template from [wxt-dev](https://github.com/wxt-dev/wxt/tree/main/templates/)
