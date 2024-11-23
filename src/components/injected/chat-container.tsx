@@ -41,7 +41,7 @@ export function ChatContainer({
       <div className="flex flex-col w-full h-full">
         <div className="px-4 py-3 flex justify-between items-center border-b dark:border-gray-700">
           <h1 className="font-semibold text-gray-900 dark:text-white">
-            Web Companion
+            Browzy
           </h1>
           <Button
             variant="ghost"

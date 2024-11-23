@@ -5,7 +5,7 @@ export default defineConfig({
   manifest: {
     default_locale: "en",
     description: "Proactive agent that helps you browse the web faster",
-    name: "Web Companion",
+    name: "Browzy",
     version: "0.0.1",
     permissions: [
       "tabs",
