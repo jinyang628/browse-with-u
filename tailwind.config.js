@@ -13,18 +13,11 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' }
         },
-        'subtle-bounce-spin-pulse': {
-          '0%': { transform: 'translateY(0) rotate(0deg) scale(1)', opacity: '1' },
-          '25%': { transform: 'translateY(-5px) rotate(90deg) scale(0.95)', opacity: '0.7' },
-          '50%': { transform: 'translateY(0) rotate(180deg) scale(1)', opacity: '1' },
-          '75%': { transform: 'translateY(-5px) rotate(270deg) scale(0.95)', opacity: '0.7' },
-          '100%': { transform: 'translateY(0) rotate(360deg) scale(1)', opacity: '1' }
-        }
       },
       animation: {
         shimmer: "shimmer 2s linear infinite",
-        'subtle-bounce': 'subtle-bounce 1s infinite',
-        'multi-animate': 'subtle-bounce-spin-pulse 3s infinite'
+        "subtle-bounce": "subtle-bounce 1s infinite",
+        "multi-animate": "subtle-bounce-spin-pulse 3s infinite",
       },
       colors: {
         border: "hsl(var(--border))",
