@@ -22,9 +22,9 @@ export async function invoke(
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent)
       .replace("{screenshot}", input.pageState.screenshot);
-    const response = await invokeClaudeAPI(final_prompt);
+    // const response = await invokeClaudeAPI(final_prompt);
 
-    logger.info(`Invoke response received ${response}`);
+    // logger.info(`Invoke response received ${response}`);
 
     // TODO: Revert the return shape to not have void
     // return invokeResponse;
