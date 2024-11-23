@@ -1,4 +1,5 @@
 import { getEmbedding } from "@/actions/embeddings/embed";
+import { invokeClaudeAPI } from "@/actions/llm/cluade";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { findSimilarUserData, getUserById, User } from "@/stores/supabase";
@@ -9,13 +10,6 @@ export default function App() {
   const [supabaseUrl, setSupabaseUrl] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
   const [openAiKey, setOpenAiKey] = useState<string>("");
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await getUserById(1);
-      setUser(user);
-    };
-    getUser();
-  }, []);
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
