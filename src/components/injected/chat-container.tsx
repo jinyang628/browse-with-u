@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
 import { logger } from "@/lib/logger";
-import ChatBottomBar from "@/components/injected/bottom-bar";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { RecordingStatusBadge } from "@/components/injected/recording-status-badge";
@@ -56,8 +55,13 @@ export function ChatContainer({
             <h1 className="font-semibold text-gray-900 dark:text-white">
               Browzy
             </h1>
-            <RecordingStatusBadge isRecording={isRecording} />
           </div>
+          <div className="flex items-center gap-1">
+            <RecordingStatusBadge
+              isRecording={isRecording}
+            onPlayButtonClick={onPlayButtonClick}
+            onPauseButtonClick={onPauseButtonClick}
+          />
           <Button
             variant="ghost"
             size="icon"
@@ -65,7 +69,8 @@ export function ChatContainer({
             onClick={onContainerClose}
           >
             <X size={20} />
-          </Button>
+            </Button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 min-h-0">
@@ -94,10 +99,6 @@ export function ChatContainer({
             <Button onClick={handleSendMessage}>Send</Button>
           </div>
           <Separator />
-          <ChatBottomBar
-            onPlayButtonClick={onPlayButtonClick}
-            onPauseButtonClick={onPauseButtonClick}
-          />
         </div>
       </div>
     </div>
