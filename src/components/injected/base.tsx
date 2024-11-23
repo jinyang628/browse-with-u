@@ -16,19 +16,34 @@ export default function InjectedBase() {
   const [latestResponse, setLatestResponse] = useState<string>("");
   const { recordingState, setRecordingState } = useRecordingStore();
 
+  const saveUrlHistory = (history: UrlHistory[]) => {
+    chrome.storage.local.set({ urlHistory: JSON.stringify(history) });
+  };
+
+  const getUrlHistory = async (): Promise<UrlHistory[]> => {
+    const result = await chrome.storage.local.get("urlHistory");
+    console.log("history", result);
+    return result?.urlHistory ? JSON.parse(result.urlHistory) : [];
+  };
+
+  useEffect(() => {
+    const getHistory = async () => {
+      const previousHistory = await getUrlHistory();
+      saveUrlHistory(
+        [
+          ...previousHistory,
+          { url: "test3", response: "hello", timestamp: Date.now() },
+        ].slice(-10),
+      );
+      const history = await getUrlHistory();
+      console.log("history", history);
+    };
+    getHistory();
+  }, [recordingState]);
+
   useEffect(() => {
     setIsRendered(true);
   }, [isChatContainerVisible]);
-
-  const saveUrlHistory = (history: UrlHistory[]) => {
-    localStorage.setItem('urlHistory', JSON.stringify(history));
-  };
-
-  const getUrlHistory = (): UrlHistory[] => {
-    const history = localStorage.getItem('urlHistory');
-    console.log('history', history);
-    return history ? JSON.parse(history) : [];
-  };
 
   const handleRecording = async () => {
     const pageState = await getCurrentPageState();
@@ -40,21 +55,20 @@ export default function InjectedBase() {
     const invokeRequest = invokeRequestSchema.parse({
       pageState: pageState,
     });
-    
+
     const invokeResponse = await invoke(invokeRequest);
     if (invokeResponse) {
       setLatestResponse(invokeResponse.response);
     }
 
-    const currentHistory = getUrlHistory();
-      const newHistoryEntry: UrlHistory = {
-        url: window.location.href,
-        response: invokeResponse?.response || "",
-        timestamp: Date.now(),
-      };
+    const newHistoryEntry: UrlHistory = {
+      url: window.location.href,
+      response: invokeResponse?.response || "",
+      timestamp: Date.now(),
+    };
 
-    const updatedHistory = [...currentHistory, newHistoryEntry].slice(-10);
-    saveUrlHistory(updatedHistory);
+    const previousHistory = await getUrlHistory();
+    saveUrlHistory([...previousHistory, newHistoryEntry].slice(-10));
 
     return invokeResponse;
   };

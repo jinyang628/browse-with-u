@@ -8,14 +8,7 @@ import {
 import { logger } from "@/lib/logger";
 import { invokeClaudeAPI } from "../llm/cluade";
 import { PageStateHistory } from "@/types/state/history";
-import {
-  addHistory,
-  addWebpage,
-  getHistoryBySessionId,
-  History,
-  POST,
-  Webpage,
-} from "@/stores/supabase";
+import { History, Webpage } from "@/stores/supabase";
 
 export const prompt = `Given a webpage with:
 - URL: {url}
@@ -82,8 +75,7 @@ export async function invoke(
       response: null,
       session_id: 1, // Hard coded for now
     };
-    const webpages: Webpage[] = await POST("webpages", [webpage]);
-    console.log(webpages);
+
     // const webpage_id: number = await addWebpage(webpage);
     // Update history
     // const history: History | null = await getHistoryBySessionId();
