@@ -18,6 +18,10 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
 
 export type _User = Tables<"users">;
 export type User = Omit<_User, "id" | "created_at">;
+export type UserData = Omit<
+  _User,
+  "id" | "created_at" | "data" | "data_vector"
+>;
 
 export type _Webpage = Tables<"webpages">;
 export type Webpage = Omit<_Webpage, "id" | "created_at">;
@@ -39,6 +43,17 @@ export async function getUserById(id: number): Promise<User> {
     throw new Error(`No user found for ${id}`);
   }
   return data[0];
+}
+
+export async function updateUserData(user: UserData) {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase.from("users").update(user).eq("id", 1);
+
+  if (error) {
+    throw new Error(`Error updating user: ${error.message}`);
+  }
+
+  return data;
 }
 
 export async function AddWebpage(webpage: Webpage) {
