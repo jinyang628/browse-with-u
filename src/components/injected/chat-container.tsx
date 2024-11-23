@@ -174,7 +174,7 @@ export function ChatContainer({
             </h2>
             <div className="p-2 flex flex-row gap-2">
               <div className="flex flex-col gap-2 w-4/5">
-                <p className="text-gray-600 dark:text-gray-400 text-sm bg-gray-100 ">
+                <p className="text-gray-600 dark:text-gray-400 text-xs bg-gray-100 p-2">
                   {longTermMemory}
                 </p>
               </div>
