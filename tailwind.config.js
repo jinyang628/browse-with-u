@@ -11,7 +11,7 @@ export default {
         },
         'subtle-bounce': {
           '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' }
+          '50%': { transform: 'translateY(-20px)' }
         },
         'subtle-bounce-spin-pulse': {
           '0%': { transform: 'translateY(0) rotate(0deg) scale(1)', opacity: '1' },
