@@ -10,3 +10,9 @@ export type PageStateHistory = z.infer<typeof pageStateHistorySchema>;
 export const defaultPageStateHistory: PageStateHistory = {
   history: [],
 };
+
+export type UrlHistory = {
+  url: string;
+  response: string;
+  timestamp: number;
+};
