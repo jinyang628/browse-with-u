@@ -27,7 +27,7 @@ export default function InjectedBase() {
 
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "l") {
         e.preventDefault();
-        setIsRecording((prev) => !prev);
+				setRecordingState({ ...recordingState, isRecording: !recordingState.isRecording });
       }
     };
 
