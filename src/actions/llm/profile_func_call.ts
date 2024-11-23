@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
+import { invokeClaudeAPI } from "./cluade";
 
 const pdfToProfileResponseSchema = z.object({
   name: z.string().optional(),
@@ -70,6 +71,16 @@ The JSON object should be in the following format:
 }
 `;
 
-const USER_PROMPT = `Here is the base64 encoded PDF file:
+const USER_PROMPT = `Here is the user data extracted about the user:
 
-{pdf_base64_image}`;
+{user_data}`;
+
+
+export async function extractProfileFromPdf(data: string) {
+  console.log('profile_func_call data', data)
+  const final_prompt = USER_PROMPT.replace("{user_data}", data);
+  const final_response = await invokeClaudeAPI(final_prompt);
+
+  console.log('final_response', final_response)
+  return final_response.text;
+}

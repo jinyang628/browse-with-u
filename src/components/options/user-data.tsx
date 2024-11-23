@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { GET, UPDATE, User } from "@/stores/supabase";
 import PdfUpload from "@/components/options/pdf-upload";
+import { extractProfileFromPdf } from "@/actions/llm/profile_func_call";
 
 export const UserDataForm: React.FC = () => {
   const [userData, setUserData] = useState<Partial<User>>({
@@ -30,8 +31,13 @@ export const UserDataForm: React.FC = () => {
 
   const onPdfUpload = (pdf_base64_image: string) => {
     // Call LLM
-    console.log(pdf_base64_image);
+    //console.log(pdf_base64_image);
     // setUserData(response);
+  };
+
+  const onTextExtracted = (text: string) => {
+    extractProfileFromPdf(text);
+    console.log(text);
   };
 
   useEffect(() => {
@@ -64,7 +70,7 @@ export const UserDataForm: React.FC = () => {
             <p className="text-base font-semibold w-[250px]">
               Personal Information
             </p>
-            <PdfUpload onPdfUpload={onPdfUpload} />
+            <PdfUpload onPdfUpload={onPdfUpload} onTextExtracted={onTextExtracted} />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
