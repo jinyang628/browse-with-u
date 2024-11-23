@@ -82,19 +82,19 @@ export async function invoke(
       session_id: 1, // Hard coded for now
     };
 
-    const webpage_id: number = await POST('webpages', [webpage]);
-    const browser_history = await getUrlHistory()
+    const webpage_id: number = await POST("webpages", [webpage]);
+    const browser_history = await getUrlHistory();
 
-    const formatted_history = formatHistory(browser_history)
+    const formatted_history = formatHistory(browser_history);
 
     const final_prompt = prompt
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent)
-      .replace("{history}", formatted_history)
+      .replace("{history}", formatted_history);
 
     const final_response = await invokeClaudeAPI(final_prompt);
 
-    console.log(final_response)
+    console.log(final_response);
     const invokeResponse = { response: final_response.text };
     return invokeResponse;
   } catch (error: unknown) {

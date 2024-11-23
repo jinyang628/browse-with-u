@@ -10,5 +10,3 @@ export type PageStateHistory = z.infer<typeof pageStateHistorySchema>;
 export const defaultPageStateHistory: PageStateHistory = {
   history: [],
 };
-
-
