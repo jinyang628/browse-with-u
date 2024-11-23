@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { GET, UPDATE, User } from "@/stores/supabase";
+import { UserDetails } from "@/actions/llm/profileFuncCall";
 import PdfUpload from "@/components/options/pdf-upload";
-import { extractProfileFromPdf } from "@/actions/llm/profile_func_call";
+import { extractProfileFromPdf } from "@/actions/llm/profileFuncCall";
 
 export const UserDataForm: React.FC = () => {
   const [userData, setUserData] = useState<Partial<User>>({
@@ -19,7 +20,7 @@ export const UserDataForm: React.FC = () => {
     languages: "",
     health_conditions: "",
     fitness_goals: "",
-    sleep_hours: 8,
+    sleep_hours: "8",
     occupation: "",
     industry: "",
     skills: "",
@@ -36,8 +37,14 @@ export const UserDataForm: React.FC = () => {
   };
 
   const onTextExtracted = (text: string) => {
-    extractProfileFromPdf(text);
-    console.log(text);
+    const updateUserData = async () => {
+      const extracted_data = await extractProfileFromPdf(text);
+      if (extracted_data) {
+        // Add null check
+        setUserData(extracted_data);
+      }
+    };
+    updateUserData();
   };
 
   useEffect(() => {
@@ -70,7 +77,10 @@ export const UserDataForm: React.FC = () => {
             <p className="text-base font-semibold w-[250px]">
               Personal Information
             </p>
-            <PdfUpload onPdfUpload={onPdfUpload} onTextExtracted={onTextExtracted} />
+            <PdfUpload
+              onPdfUpload={onPdfUpload}
+              onTextExtracted={onTextExtracted}
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">

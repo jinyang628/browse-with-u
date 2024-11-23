@@ -1,86 +1,92 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { invokeClaudeAPI } from "./cluade";
+import { invokeClaudeAPI } from "./claude";
+import OpenAI from "openai";
+import { zodResponseFormat } from "openai/helpers/zod";
 
-const pdfToProfileResponseSchema = z.object({
-  name: z.string().optional(),
-  date_of_birth: z.string().optional(),
-  gender: z.string().optional(),
-  email: z.string().optional(),
-  phone: z.string().optional(),
-  location: z.string().optional(),
-  nationality: z.string().optional(),
-  languages: z.string().optional(),
-  health_conditions: z.string().optional(),
-  fitness_goals: z.string().optional(),
-  sleep_hours: z.string().optional(),
-  occupation: z.string().optional(),
-  industry: z.string().optional(),
-  skills: z.string().optional(),
-  hobbies: z.string().optional(),
-  food: z.string().optional(),
-  goals: z.string().optional(),
-  allergies: z.string().optional(),
+export const UserDetails = z.object({
+  name: z.string(),
+  date_of_birth: z.string(),
+  gender: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  location: z.string(),
+  nationality: z.string(),
+  languages: z.string(),
+  health_conditions: z.string(),
+  fitness_goals: z.string(),
+  sleep_hours: z.string(),
+  occupation: z.string(),
+  industry: z.string(),
+  skills: z.string(),
+  hobbies: z.string(),
+  food: z.string(),
+  goals: z.string(),
+  allergies: z.string(),
 });
 
 const SYSTEM_PROMPT = `
-You are a helpful assistant that can generate a personalized profile based on a PDF file.
+  You are a helpful assistant that can generate a personalized profile based on a PDF file.
 
-Try to be as concise as possible in your resposne and do not include any explanations or additional information. You will be given a base64 encoded PDF file and you will need to generate a JSON object that contains the following information:
+  Try to be as concise as possible in your resposne and do not include any explanations or additional information. 
+  You will be given user details and you will need to generate a JSON object with string values that contains the following information:
 
-- name
-- date_of_birth
-- gender
-- email
-- phone
-- location
-- nationality
-- languages
-- health_conditions
-- fitness_goals
-- sleep_hours
-- occupation
-- industry
-- skills
-- hobbies
-- food
-- goals
-- allergies
+  JSON format with keys: “name”, "date_of_birth", "gender", "email", "phone", "location", "nationality", "languages", "health_conditions", "fitness_goals", "sleep_hours", "occupation", "industry", "skills", "hobbies", "food", "goals", "allergies".
 
-The JSON object should be in the following format:
+  The JSON object should be in the following format:
 
-{
-  "name": "John Doe",
-  "date_of_birth": "1990-01-01",
-  "gender": "male",
-  "email": "john.doe@example.com",
-  "phone": "123-456-7890",
-  "location": "New York, NY",
-  "nationality": "American",
-  "languages": "English, Spanish",
-  "health_conditions": "Diabetes",
-  "fitness_goals": "Running",
-  "sleep_hours": "7",
-  "occupation": "Software Engineer",
-  "industry": "Technology",
-  "skills": "Python, JavaScript",
-  "hobbies": "Reading, Writing",
-  "food": "Pizza, Sushi",
-  "goals": "Learn new skills, Improve health",
-  "allergies": "Peanuts, Tree Nuts"
-}
-`;
+  {
+    "name": "John Doe",
+    "date_of_birth": "1990-01-01",
+    "gender": "male",
+    "email": "john.doe@example.com",
+    "phone": "123-456-7890",
+    "location": "New York, NY",
+    "nationality": "American",
+    "languages": "English, Spanish",
+    "health_conditions": "Diabetes",
+    "fitness_goals": "Running",
+    "sleep_hours": "7",
+    "occupation": "Software Engineer",
+    "industry": "Technology",
+    "skills": "Python, JavaScript",
+    "hobbies": "Reading, Writing",
+    "food": "Pizza, Sushi",
+    "goals": "Learn new skills, Improve health",
+    "allergies": "Peanuts, Tree Nuts"
+  }
+
+
+  `;
 
 const USER_PROMPT = `Here is the user data extracted about the user:
 
-{user_data}`;
-
+  {user_data}
+  
+  Output a JSON object only. Do not JSON key names at all. All the values should be in string format. No other text.`;
 
 export async function extractProfileFromPdf(data: string) {
-  console.log('profile_func_call data', data)
-  const final_prompt = USER_PROMPT.replace("{user_data}", data);
-  const final_response = await invokeClaudeAPI(final_prompt);
+  // console.log('profile_func_call data', data)
+  // const final_prompt = USER_PROMPT.replace("{user_data}", data);
+  // const final_response = await invokeClaudeAPI(final_prompt);
+  const { apiKey } = await browser.storage.sync.get("openAiKey");
+  const openai = new OpenAI({
+    dangerouslyAllowBrowser: true,
+    apiKey:
+      apiKey,
+  });
 
-  console.log('final_response', final_response)
-  return final_response.text;
+  const final_prompt = USER_PROMPT.replace("{user_data}", data);
+  const completion = await openai.beta.chat.completions.parse({
+    model: "gpt-4o",
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: final_prompt },
+    ],
+    response_format: zodResponseFormat(UserDetails, "user_details"),
+  });
+
+  const event = completion.choices[0].message.parsed;
+  console.log("event", event);
+  return event;
 }
