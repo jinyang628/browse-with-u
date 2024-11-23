@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { getUserById, updateUserData, UserData } from "@/stores/supabase";
+import { GET, UPDATE, UserData } from "@/stores/supabase";
 
 export const UserDataForm: React.FC = () => {
   const [userData, setUserData] = useState<UserData>({
@@ -28,9 +28,9 @@ export const UserDataForm: React.FC = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await getUserById(1);
-      if (user) {
-        setUserData(user);
+      const users = await GET<"users">("users", { id: 1 });
+      if (users && users.length > 0) {
+        setUserData(users[0]);
       }
     };
     getUser();
@@ -44,6 +44,7 @@ export const UserDataForm: React.FC = () => {
     };
 
   const handleSubmit = () => {
+    UPDATE<"users">("users", { id: 1 }, userData);
     updateUserData(userData);
   };
 
