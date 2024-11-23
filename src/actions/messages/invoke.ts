@@ -1,4 +1,5 @@
 import browser from "webextension-polyfill";
+import { prompt } from "@/lib/prompts";
 
 import {
   InvokeRequest,
@@ -6,6 +7,7 @@ import {
   invokeResponseSchema,
 } from "@/types/actions/messages/invoke";
 import { logger } from "@/lib/logger";
+import { invokeClaudeAPI } from "../llm/cluade";
 
 export async function invoke(
   input: InvokeRequest,
@@ -16,7 +18,12 @@ export async function invoke(
     // TODO: Database, LLM, etc.
     // const response =
     // const invokeResponse = invokeResponseSchema.parse(response.data);
-    logger.info(`Invoke response received`);
+    const final_prompt = prompt.replace("{url}", input.pageState.url)
+    .replace("{textContent}", input.pageState.textContent)
+    .replace("{screenshot}", input.pageState.screenshot);
+    const response = await invokeClaudeAPI(final_prompt);
+
+    logger.info(`Invoke response received ${response}`);
 
     // TODO: Revert the return shape to not have void
     // return invokeResponse;
