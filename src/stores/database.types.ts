@@ -39,18 +39,21 @@ export type Database = {
         Row: {
           created_at: string
           data: string | null
+          data_vector: string | null
           id: number
           name: string | null
         }
         Insert: {
           created_at?: string
           data?: string | null
+          data_vector?: string | null
           id?: number
           name?: string | null
         }
         Update: {
           created_at?: string
           data?: string | null
+          data_vector?: string | null
           id?: number
           name?: string | null
         }
@@ -58,21 +61,41 @@ export type Database = {
       }
       webpages: {
         Row: {
+          base64_image: string | null
           created_at: string
           id: number
+          page_data: string | null
+          response: string | null
           session_id: number | null
+          url: string | null
         }
         Insert: {
+          base64_image?: string | null
           created_at?: string
           id?: number
+          page_data?: string | null
+          response?: string | null
           session_id?: number | null
+          url?: string | null
         }
         Update: {
+          base64_image?: string | null
           created_at?: string
           id?: number
+          page_data?: string | null
+          response?: string | null
           session_id?: number | null
+          url?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "webpages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

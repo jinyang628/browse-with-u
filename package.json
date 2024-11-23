@@ -43,6 +43,7 @@
     "@types/firefox-webext-browser": "^120.0.4",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/webextension-polyfill": "^0.12.1",
     "@wxt-dev/module-react": "^1.1.1",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",

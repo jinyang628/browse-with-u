@@ -4,12 +4,27 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
+import { useQueries } from "@tanstack/react-query";
+import { getUserById, User } from "@/stores/supabase";
 
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await getUserById(1);
+      setUser(user);
+    }
+    getUser();
+  }, [])
+    
+  console.log('user', user);
+
 
   // TODO: This is just to test whether the api key is set, we should access it directly in the agent layer logic instead
   useEffect(() => {
