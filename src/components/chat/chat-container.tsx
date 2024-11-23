@@ -8,7 +8,6 @@ import { useQueries } from "@tanstack/react-query";
 import { getUserById, User } from "@/stores/supabase";
 import { logger } from "@/lib/logger";
 
-
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
