@@ -121,10 +121,10 @@ export default function InjectedBase() {
   }
 
   return (
-    <div className="fixed inset-0 pointer-events-none">
-      <div className="absolute bottom-11 right-11">
+    <div className={`fixed inset-0 pointer-events-none ${unseenMessageExist ? "animate-subtle-bounce" : ""}`}>
+      {/* <div className="absolute bottom-11 right-11">
         <TogglableSpeechBubble text={"!!!"} isVisible={unseenMessageExist} />
-      </div>
+      </div> */}
       <div className="absolute bottom-4 right-4 pointer-events-auto">
         <PulsatingCircle
           isVisible={!isChatContainerVisible}

@@ -1,6 +1,5 @@
 import { Badge } from "@/components/ui/badge";
 import { Eye, Pause, Play } from "lucide-react";
-import { Button } from "../ui/button";
 
 type RecordingStatusBadgeProps = {
   isRecording: boolean;
