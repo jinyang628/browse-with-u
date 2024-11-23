@@ -32,7 +32,7 @@ export type Database = {
           {
             foreignKeyName: "history_session_id_fkey";
             columns: ["session_id"];
-            isOneToOne: false;
+            isOneToOne: true;
             referencedRelation: "sessions";
             referencedColumns: ["id"];
           },

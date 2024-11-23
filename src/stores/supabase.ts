@@ -27,85 +27,104 @@ export type UserData = Omit<
 export type _Webpage = Tables<"webpages">;
 export type Webpage = Omit<_Webpage, "id" | "created_at">;
 
-export async function getUserById(id: number): Promise<User> {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .filter("id", "eq", id);
+export type _History = Tables<"history">;
+export type History = Omit<_History, "id" | "created_at">;
+type TableName = keyof Database["public"]["Tables"];
+type Row<T extends TableName> = Tables<T>;
+
+export async function GET<T extends TableName>(
+  tableName: T,
+  filterConditions?: Partial<Row<T>>,
+): Promise<Row<T>[]> {
+  // const users = await GET("users", { gender: "male" });
+
+  const client = await getSupabaseClient();
+  let query = client.from(tableName).select("*");
+
+  if (filterConditions) {
+    Object.entries(filterConditions).forEach(([column, value]) => {
+      query = query.eq(column, value);
+    });
+  }
+
+  const { data, error } = await query;
 
   if (error) {
-    throw new Error(`Error fetching user id: ${error.message}`);
+    throw error;
   }
-  if (data.length > 1) {
-    throw new Error(`Duplicate user found for ${id}`);
-  }
-  if (data.length === 0) {
-    throw new Error(`No user found for ${id}`);
-  }
-  return data[0];
+
+  return data as Row<T>[];
 }
 
-export async function updateUserData(user: UserData) {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase.from("users").update(user).eq("id", 1);
+export async function POST<T extends TableName>(
+  tableName: T,
+  data: Partial<Row<T>>,
+): Promise<void> {
+  // await POST("users", {
+  //   gender: "male",
+  //   ...
+  //   ...
+  // });
+  const client = await getSupabaseClient();
+
+  const filteredData = Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => value != null),
+  );
+
+  const { error } = await client.from(tableName).insert(filteredData);
 
   if (error) {
-    throw new Error(`Error updating user: ${error.message}`);
+    throw error;
   }
-
-  return data;
 }
 
-export async function addWebpage(webpage: Webpage) {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase.from("webpages").insert(webpage);
-}
+export async function UPDATE<T extends TableName>(
+  tableName: T,
+  filterConditions: Partial<Row<T>>,
+  updateData: Partial<Row<T>>,
+): Promise<Row<T>[]> {
+  // const updatedUsers = await UPDATE(
+  //   "users",
+  //   { gender: "male" },
+  //   { email: "male_user@email.com" }
+  // );
 
-export async function updateWebpage(webpage: Webpage) {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase.from("webpages").update(webpage);
-}
+  const client = await getSupabaseClient();
+  let query = client.from(tableName).update(updateData);
 
-export async function addHistory(history: PageStateHistory) {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase.from("history").insert(history);
-}
+  Object.entries(filterConditions).forEach(([column, value]) => {
+    query = query.eq(column, value);
+  });
 
-// Hard code session_id for now
-export async function getHistoryBySessionId(
-  session_id: number = 1,
-): Promise<History | null> {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from("history")
-    .select("*")
-    .eq("session_id", session_id);
+  const { data, error } = await query;
 
   if (error) {
-    throw new Error(`Error fetching history: ${error.message}`);
-  }
-  if (data.length > 1) {
-    throw new Error(`Duplicate history found for ${session_id}`);
+    throw error;
   }
 
-  return data ? data[0] : null;
+  return data as unknown as Row<T>[];
 }
 
-// Hard code session_id for now
-export async function updateHistoryBySessionId(
-  session_id: number = 1,
-  history: PageStateHistory,
-) {
-  const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from("history")
-    .update(history)
-    .eq("session_id", session_id);
+export async function DELETE<T extends TableName>(
+  tableName: T,
+  filterConditions: Partial<Row<T>>,
+): Promise<Row<T>[]> {
+  // const deletedUsers = await DELETE("users", { gender: "suveen" });
+
+  const client = await getSupabaseClient();
+  let query = client.from(tableName).delete();
+
+  Object.entries(filterConditions).forEach(([column, value]) => {
+    query = query.eq(column, value);
+  });
+
+  const { data, error } = await query;
+
   if (error) {
-    throw new Error(`Error updating history: ${error.message}`);
+    throw error;
   }
-  return data;
+
+  return data as unknown as Row<T>[];
 }
 
 export async function findSimilarUserData(query: string) {
