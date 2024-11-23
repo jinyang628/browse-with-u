@@ -13,8 +13,7 @@ about the user's intents and behaviors. You should only return a topic user is i
 
 URLs and content: {context}
 
-Identify patterns and return the topic.
-
+Identify patterns and return the topic. Don't use the word 'user' in the response.
 
 Focus on finding meaningful patterns like:
 - Common subject matter or themes
