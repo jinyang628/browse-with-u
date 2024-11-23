@@ -11,6 +11,7 @@ import { PageStateHistory } from "@/types/state/history";
 import { History, POST, Webpage } from "@/stores/supabase";
 import { getUrlHistory } from "@/components/injected/base";
 import { formatHistory } from "@/utils/pagestate/format-history";
+import { fetchLtmInfo } from "@/utils/fetch-ltm-info";
 
 export const prompt = `Given a webpage with:
 - URL: {url}
@@ -87,14 +88,19 @@ export async function invoke(
 
     const formatted_history = formatHistory(browser_history);
 
+
+    const user_details = await fetchLtmInfo();
+
     const final_prompt = prompt
+      .replace("{user_details}", JSON.stringify(user_details))
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent)
       .replace("{history}", formatted_history);
 
     const final_response = await invokeClaudeAPI(final_prompt);
 
-    console.log(final_response);
+    logger.info("final_response");
+    logger.info(final_response);
     const invokeResponse = { response: final_response.text };
     return invokeResponse;
   } catch (error: unknown) {
