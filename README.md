@@ -23,38 +23,29 @@ Use case (need to come up with more)
 - writing thrive map report
 - user is doing research on a topic, and is constantly alternating between reading blogs/articles and his google doc that stores his learnings/ideas
 
-### How?
-Agent stores 2 modes of memory:
-- short term memory: current and past page states (with functional limit)
-- long term memory: user defined information (resume, travel itinerary, google docs, mum's name, preferences etc)
+### How? 
+1. Agent collects data from the page states visited by the user
+2. Agent identifies objectives
+3. Agent provides suggestions to objectives based on STM and LTM
+
+- STM: short term memory: current and past page states (with functional limit)
+- LTM: long term memory: user defined information (resume, travel itinerary, google docs, mum's name, preferences etc)
+
+P0 Core functionalities
+- Agent can store page states from user browsing (STM)
+- Agent can store user-defined information (LTM)
+- Agent can identify objectives 
+- Agent can give suggestions based on LTM and STM
+
+
+P1:
+- Agent can add things to LTM using user's answers to preference questions
+
+Preference questions: yes/no questions regarding user preferences (do u like ramen? | are u allergic to peanuts?) + if not, what? (user can provide a text)
+
 
 short term memory (page states) is collected by the pages he has visited
 long term memory is user defined + user-added information based on preference questions
 
 preference questions: yes/no questions to user preferences (do u like ramen? | are u allergic to peanuts?)
 add-on: if not, what isit? (user can provide a text)
-
-### END ACTIONS
-Data collection:
-- STM
-1. Agent can collect and store page states 
-- LTM
-1. Agent can collect and store user-defined information
-2. Agent can ask preference questions and store answers to LTM
-
-Objective identification:
-- Agent can identify user objectives based on STM
-
-Suggestions:
-- Agent can give suggestions based on LTM and STM
-
-P0
-- Agent can store page states from user browsing
-- Agent can store user-defined information
-- Agent can identify objectives 
-- Agent can give suggestions based on LTM and STM
-
-### Identifying user objectives
-
-1. What user searched for
-2. The pages user has visited
