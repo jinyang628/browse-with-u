@@ -65,19 +65,13 @@ export async function invoke(
 ): Promise<InvokeResponse | void> {
   try {
     logger.info(`Invoke request initiated`);
-    console.log(input);
-    // TODO: Database, LLM, etc.
-    // const response =
-    // const invokeResponse = invokeResponseSchema.parse(response.data);
     const final_prompt = prompt
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent);
-    const response = await invokeClaudeAPI(final_prompt);
+    const final_response = await invokeClaudeAPI(final_prompt);
 
-    // logger.info(`Invoke response received ${response}`);
-
-    // TODO: Revert the return shape to not have void
-    // return invokeResponse;
+    const invokeResponse = { response: final_response.text };
+    return invokeResponse;
   } catch (error: unknown) {
     logger.error(`Invoke error: ${error}`);
     throw error;

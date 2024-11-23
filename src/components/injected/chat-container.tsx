@@ -11,26 +11,40 @@ import { RecordingStatusBadge } from "@/components/injected/recording-status-bad
 type ChatContainerProps = {
   isVisible: boolean;
   isRecording: boolean;
+  latestResponse: string;
   onContainerClose: () => void;
   onPlayButtonClick: () => void;
   onPauseButtonClick: () => void;
 };
 
+type ChatMessage = {
+  content: string;
+  role: "user" | "assistant";
+};
+
 export function ChatContainer({
   isVisible,
   isRecording,
+  latestResponse,
   onContainerClose,
   onPlayButtonClick,
   onPauseButtonClick,
 }: ChatContainerProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    setMessages([...messages, { content: latestResponse, role: "assistant" }]);
+  }, [latestResponse]);
+
+  console.log("latestResponse", latestResponse);
 
   const handleSendMessage = () => {
     if (inputValue.trim() === "") return;
     setInputValue("");
     console.log("Sending message");
+    setMessages([...messages, { content: inputValue, role: "user" }]);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
