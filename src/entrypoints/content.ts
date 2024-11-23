@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import { ChatContainer } from "@/components/chat/chat-container";
 import React from "react";
 import "@/styles/globals.css";
 import { QueryProvider } from "@/components/shared/query-provider";
@@ -14,7 +13,7 @@ import {
   screenshotRequestSchema,
 } from "@/types/messages/requests";
 import { ShadowRootContentScriptUiOptions } from "wxt/client";
-import talkify from "talkify-tts";
+import InjectedBase from "@/components/injected/base";
 
 const shadowRootOptions: ShadowRootContentScriptUiOptions<any> = {
   name: WEB_COMPANION_CHAT_CONTAINER_ID,
@@ -42,7 +41,7 @@ const shadowRootOptions: ShadowRootContentScriptUiOptions<any> = {
       React.createElement(
         QueryProvider,
         null,
-        React.createElement(ChatContainer),
+        React.createElement(InjectedBase),
       ),
     );
 
