@@ -2,7 +2,7 @@ import { pageStateSchema } from "@/types/page";
 import { z } from "zod";
 
 export const invokeRequestSchema = z.object({
-  pageState: pageStateSchema,
+  pageStates: z.array(pageStateSchema),
 });
 
 export type InvokeRequest = z.infer<typeof invokeRequestSchema>;
