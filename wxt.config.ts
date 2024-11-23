@@ -14,6 +14,10 @@ export default defineConfig({
       "webNavigation",
       "storage",
       "accessibility",
+      "scripting",
+      "downloads", 
+      "cookies",
+      "notifications"
     ],
     background: {
       service_worker: "background.js",
