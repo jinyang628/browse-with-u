@@ -1,3 +1,4 @@
+import { analyzeNewWebpages } from "@/actions/llm/longTermMemory";
 import { invoke } from "@/actions/messages/invoke";
 import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
@@ -54,6 +55,12 @@ export default function InjectedBase() {
 
     const previousHistory = await getUrlHistory();
     saveUrlHistory([...previousHistory, newHistoryEntry].slice(-10));
+
+    setTimeout(async () => {
+      const analysis = await analyzeNewWebpages().catch(err => logger.error("Failed to analyze pages:", err));
+      console.log('analysis on FE', analysis);
+    }, 0);
+
 
     return invokeResponse;
   };

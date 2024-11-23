@@ -70,8 +70,7 @@ export function ChatContainer({
       onMessagesUpdate(finalMessages);
       logger.info("Updated messages", finalMessages);
     } catch (error) {
-      logger.error("Error sending message:", error);
-      // Optionally add error handling UI here
+      logger.error("Error sending message:");
     } finally {
       setIsLoading(false);
     }
