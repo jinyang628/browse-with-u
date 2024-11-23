@@ -1,3 +1,4 @@
+import { analyzeNewWebpages } from "@/actions/llm/longTermMemory";
 import React, { useState, useEffect } from "react";
 import { invoke } from "@/actions/messages/invoke";
 import { ChatContainer } from "@/components/injected/chat-container";
@@ -26,6 +27,7 @@ export default function InjectedBase() {
   const { recordingState, setRecordingState } = useRecordingStore();
   const [messages, setMessages] = useState<Message[]>([]);
   const [unseenMessageExist, setUnseenMessageExist] = useState(false);
+  const [longTermMemory, setLongTermMemory] = useState<string>("");
 
   useEffect(() => {
     setIsRendered(true);
@@ -58,6 +60,15 @@ export default function InjectedBase() {
 
     const previousHistory = await getUrlHistory();
     saveUrlHistory([...previousHistory, newHistoryEntry].slice(-10));
+
+    setTimeout(async () => {
+      const analysis = await analyzeNewWebpages().catch((err) =>
+        logger.error("Failed to analyze pages:", err),
+      );
+      if (analysis) {
+        setLongTermMemory(analysis);
+      }
+    }, 0);
 
     return invokeResponse;
   };
@@ -116,6 +127,8 @@ export default function InjectedBase() {
         onMessagesUpdate={(messages) => {
           setMessages(messages);
         }}
+        longTermMemory={longTermMemory}
+        setLongTermMemory={setLongTermMemory}
       />
     );
   }

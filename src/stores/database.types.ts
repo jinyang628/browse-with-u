@@ -144,6 +144,7 @@ export type Database = {
           base64_image: string | null;
           created_at: string;
           id: number;
+          is_analyzed: boolean | null;
           page_data: string | null;
           response: string | null;
           session_id: number | null;
@@ -153,6 +154,7 @@ export type Database = {
           base64_image?: string | null;
           created_at?: string;
           id?: number;
+          is_analyzed?: boolean | null;
           page_data?: string | null;
           response?: string | null;
           session_id?: number | null;
@@ -162,6 +164,7 @@ export type Database = {
           base64_image?: string | null;
           created_at?: string;
           id?: number;
+          is_analyzed?: boolean | null;
           page_data?: string | null;
           response?: string | null;
           session_id?: number | null;

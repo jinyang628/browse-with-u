@@ -19,6 +19,8 @@ type ChatContainerProps = {
   onPlayButtonClick: () => void;
   onPauseButtonClick: () => void;
   onMessagesUpdate: (messages: Message[]) => void;
+  longTermMemory: string;
+  setLongTermMemory: (longTermMemory: string) => void;
 };
 
 export function ChatContainer({
@@ -29,10 +31,14 @@ export function ChatContainer({
   onPlayButtonClick,
   onPauseButtonClick,
   onMessagesUpdate,
+  longTermMemory,
+  setLongTermMemory,
 }: ChatContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAccepted, setIsAccepted] = useState<boolean>(false);
+  const [isRejected, setIsRejected] = useState<boolean>(false);
 
   const handleSendMessage = async () => {
     if (inputValue.trim() === "" || isLoading) return;
@@ -70,8 +76,7 @@ export function ChatContainer({
       onMessagesUpdate(finalMessages);
       logger.info("Updated messages", finalMessages);
     } catch (error) {
-      logger.error("Error sending message:", error);
-      // Optionally add error handling UI here
+      logger.error("Error sending message:");
     } finally {
       setIsLoading(false);
     }
@@ -84,6 +89,20 @@ export function ChatContainer({
       return;
     }
   };
+
+  useEffect(() => {
+    if (isAccepted || isRejected) {
+      // Add 1 second delay using setTimeout
+      const timer = setTimeout(() => {
+        setIsAccepted(false);
+        setIsRejected(false);
+        setLongTermMemory("");
+      }, 1000);
+
+      // Cleanup timeout if component unmounts or effect re-runs
+      return () => clearTimeout(timer);
+    }
+  }, [isAccepted, isRejected]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -148,6 +167,44 @@ export function ChatContainer({
           </div>
           <Separator />
         </div>
+        {longTermMemory && !isAccepted && !isRejected && (
+          <>
+            <h2 className="text-[10px] text-center font-semibold mt-2">
+              Long Term Memory suggestion
+            </h2>
+            <div className="p-2 flex flex-row gap-2 justify-center align-middle">
+              <div className="flex flex-col gap-2 w-4/5">
+                <p className="text-gray-600 dark:text-gray-400 text-xs bg-gray-100 p-2 rounded-sm">
+                  {longTermMemory}
+                </p>
+              </div>
+              <div className="flex gap-2 w-1/5 my-auto justify-center">
+                <div
+                  className="w-5 h-5 bg-red-500 rounded-sm text-white flex justify-center items-center"
+                  onClick={() => setIsRejected(true)}
+                >
+                  ✗
+                </div>
+                <div
+                  className="w-5 h-5 bg-green-500 rounded-sm text-white flex justify-center items-center"
+                  onClick={() => setIsAccepted(true)}
+                >
+                  ✓
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+        {isAccepted && (
+          <p className="text-black text-xs text-center bg-gray-100 p-4 rounded-lg">
+            Long term memory saved.
+          </p>
+        )}
+        {isRejected && (
+          <p className="text-black text-xs text-center bg-gray-100 p-4 rounded-lg">
+            Long term memory rejected.
+          </p>
+        )}
       </div>
     </div>
   );
