@@ -23,42 +23,42 @@ export default function App() {
           <UserDataForm />
         </TabsContent>
         <TabsContent value="keys">
-        <div className="flex flex-col space-y-4 max-w-[800px] max-h-[800px] w-full p-4">
-          <Card className="flex flex-col space-y-4 max-w-[480px] p-4 w-full">
-            <p className="text-base font-semibold">Anthropic API Key:</p>
-            <Input
-              onChange={(e) => setApiKey(e.target.value)}
-              value={apiKey}
-              placeholder="Enter your Anthropic API key"
-            />
-            <p className="text-base font-semibold">OpenAI API Key:</p>
-            <Input
-              onChange={(e) => setOpenAiKey(e.target.value)}
-              value={openAiKey}
-              placeholder="Enter your OpenAI API key"
-            />
-            <p className="text-base font-semibold">Supabase Key:</p>
-            <Input
-              onChange={(e) => setSupabaseKey(e.target.value)}
-              value={supabaseKey}
-              placeholder="Enter your Supabase key"
-            />
-            <p className="text-base font-semibold">Supabase URL:</p>
-            <Input
-              onChange={(e) => setSupabaseUrl(e.target.value)}
-              value={supabaseUrl}
-              placeholder="Enter your Supabase URL"
-            />
-            <Button
-              onClick={() => {
-                browser.storage.sync.set({ apiKey: apiKey });
-                browser.storage.sync.set({ supabaseKey: supabaseKey });
-                browser.storage.sync.set({ supabaseUrl: supabaseUrl });
-                browser.storage.sync.set({ openAiKey: openAiKey });
-              }}
-            >
-              Save
-            </Button>
+          <div className="flex flex-col space-y-4 max-w-[800px] max-h-[800px] w-full p-4">
+            <Card className="flex flex-col space-y-4 max-w-[480px] p-4 w-full">
+              <p className="text-base font-semibold">Anthropic API Key:</p>
+              <Input
+                onChange={(e) => setApiKey(e.target.value)}
+                value={apiKey}
+                placeholder="Enter your Anthropic API key"
+              />
+              <p className="text-base font-semibold">OpenAI API Key:</p>
+              <Input
+                onChange={(e) => setOpenAiKey(e.target.value)}
+                value={openAiKey}
+                placeholder="Enter your OpenAI API key"
+              />
+              <p className="text-base font-semibold">Supabase Key:</p>
+              <Input
+                onChange={(e) => setSupabaseKey(e.target.value)}
+                value={supabaseKey}
+                placeholder="Enter your Supabase key"
+              />
+              <p className="text-base font-semibold">Supabase URL:</p>
+              <Input
+                onChange={(e) => setSupabaseUrl(e.target.value)}
+                value={supabaseUrl}
+                placeholder="Enter your Supabase URL"
+              />
+              <Button
+                onClick={() => {
+                  browser.storage.sync.set({ apiKey: apiKey });
+                  browser.storage.sync.set({ supabaseKey: supabaseKey });
+                  browser.storage.sync.set({ supabaseUrl: supabaseUrl });
+                  browser.storage.sync.set({ openAiKey: openAiKey });
+                }}
+              >
+                Save
+              </Button>
             </Card>
           </div>
         </TabsContent>
