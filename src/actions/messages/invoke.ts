@@ -81,7 +81,7 @@ export async function invoke(
       response: null,
       session_id: 1, // Hard coded for now
     };
-    const webpage_id: number = await addWebpage(webpage);
+    // const webpage_id: number = await addWebpage(webpage);
     // Update history
     // const history: History | null = await getHistoryBySessionId();
     // if (!history) {
@@ -98,12 +98,10 @@ export async function invoke(
     const final_prompt = prompt
       .replace("{url}", input.pageState.url)
       .replace("{textContent}", input.pageState.textContent);
-    const response = await invokeClaudeAPI(final_prompt);
+    const final_response = await invokeClaudeAPI(final_prompt);
 
-    // logger.info(`Invoke response received ${response}`);
-
-    // TODO: Revert the return shape to not have void
-    // return invokeResponse;
+    const invokeResponse = { response: final_response.text };
+    return invokeResponse;
   } catch (error: unknown) {
     logger.error(`Invoke error: ${error}`);
     throw error;
