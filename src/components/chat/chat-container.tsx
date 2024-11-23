@@ -4,6 +4,13 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
+import { logger } from "@/lib/logger";
+import { INVOKE_SPEECH_ACTION } from "@/constants/browser";
+import { screenshotPhaseSchema } from "@/types/messages/actions";
+import {
+  invokeSpeechRequestSchema,
+  screenshotRequestSchema,
+} from "@/types/messages/requests";
 
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);

@@ -23,5 +23,7 @@ export const getCurrentPageState = async (): Promise<PageState | undefined> => {
     screenshot: screenshot,
   });
 
+  console.log(currentPageState);
+
   return currentPageState;
 };

@@ -9,8 +9,12 @@ import {
   screenshotPhaseSchema,
 } from "@/types/messages/actions";
 import { logger } from "@/lib/logger";
-import { screenshotRequestSchema } from "@/types/messages/requests";
+import {
+  invokeSpeechRequestSchema,
+  screenshotRequestSchema,
+} from "@/types/messages/requests";
 import { ShadowRootContentScriptUiOptions } from "wxt/client";
+import talkify from "talkify-tts";
 
 const shadowRootOptions: ShadowRootContentScriptUiOptions<any> = {
   name: WEB_COMPANION_CHAT_CONTAINER_ID,
@@ -44,23 +48,26 @@ const shadowRootOptions: ShadowRootContentScriptUiOptions<any> = {
 
     window.addEventListener("message", async (event) => {
       if (event.source !== window) return;
-      const parseResult = screenshotRequestSchema.safeParse(event.data);
-      if (!parseResult.success) return;
 
-      const phase: ScreenshotPhase = parseResult.data.phase;
+      const screenshotParseResult = screenshotRequestSchema.safeParse(
+        event.data,
+      );
+      if (screenshotParseResult.success) {
+        const phase: ScreenshotPhase = screenshotParseResult.data.phase;
 
-      switch (phase) {
-        case screenshotPhaseSchema.Values.before:
-          rootContainer.style.display = "none";
-          break;
-        case screenshotPhaseSchema.Values.after:
-          rootContainer.style.display = "";
-          break;
-        default:
-          logger.error(
-            "Invalid screenshot phase. Expected 'before' or 'after'",
-          );
-          break;
+        switch (phase) {
+          case screenshotPhaseSchema.Values.before:
+            rootContainer.style.display = "none";
+            break;
+          case screenshotPhaseSchema.Values.after:
+            rootContainer.style.display = "";
+            break;
+          default:
+            logger.error(
+              "Invalid screenshot phase. Expected 'before' or 'after'",
+            );
+            break;
+        }
       }
     });
 
