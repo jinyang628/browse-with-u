@@ -9,4 +9,4 @@ Please analyze this webpage and provide a comprehensive summary. Focus on:
 3. Any notable features or elements visible in the screenshot
 4. The overall context and relevance
 
-Respond in a clear, structured format.`
+Respond in a clear, structured format.`;
