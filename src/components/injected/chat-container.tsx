@@ -16,19 +16,7 @@ export function ChatContainer({
   onContainerClose,
 }: ChatContainerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // TODO: This is just to test whether the api key is set, we should access it directly in the agent layer logic instead
-  useEffect(() => {
-    const retrieveApiKey = async () => {
-      const result = await browser.storage.sync.get("apiKey");
-      const pageState = await getCurrentPageState();
-      console.log(result.apiKey);
-      console.log(pageState);
-    };
-    retrieveApiKey();
-  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
