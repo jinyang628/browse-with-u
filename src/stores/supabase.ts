@@ -1,6 +1,7 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { Database, Tables } from "@/stores/database.types";
 import { getEmbedding } from "@/actions/embeddings/embed";
+import { PageStateHistory } from "@/types/state/history";
 
 let supabaseClient: SupabaseClient | null = null;
 
@@ -56,7 +57,7 @@ export async function updateUserData(user: UserData) {
   return data;
 }
 
-export async function AddWebpage(webpage: Webpage) {
+export async function addWebpage(webpage: Webpage) {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase.from("webpages").insert(webpage);
 }
@@ -64,6 +65,47 @@ export async function AddWebpage(webpage: Webpage) {
 export async function updateWebpage(webpage: Webpage) {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase.from("webpages").update(webpage);
+}
+
+export async function addHistory(history: PageStateHistory) {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase.from("history").insert(history);
+}
+
+// Hard code session_id for now
+export async function getHistoryBySessionId(
+  session_id: number = 1,
+): Promise<History | null> {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase
+    .from("history")
+    .select("*")
+    .eq("session_id", session_id);
+
+  if (error) {
+    throw new Error(`Error fetching history: ${error.message}`);
+  }
+  if (data.length > 1) {
+    throw new Error(`Duplicate history found for ${session_id}`);
+  }
+
+  return data ? data[0] : null;
+}
+
+// Hard code session_id for now
+export async function updateHistoryBySessionId(
+  session_id: number = 1,
+  history: PageStateHistory,
+) {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase
+    .from("history")
+    .update(history)
+    .eq("session_id", session_id);
+  if (error) {
+    throw new Error(`Error updating history: ${error.message}`);
+  }
+  return data;
 }
 
 export async function findSimilarUserData(query: string) {

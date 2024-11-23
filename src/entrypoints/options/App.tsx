@@ -4,11 +4,12 @@ import { User } from "@/stores/supabase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserDataForm } from "@/components/options/user-data";
 import { Card } from "@/components/ui/card";
+import { SUPABASE_KEY, SUPABASE_URL } from "@/constants/supabase";
 
 export default function App() {
   const [apiKey, setApiKey] = useState<string>("");
-  const [supabaseKey, setSupabaseKey] = useState<string>("");
-  const [supabaseUrl, setSupabaseUrl] = useState<string>("");
+  const [supabaseKey, setSupabaseKey] = useState<string>(SUPABASE_KEY);
+  const [supabaseUrl, setSupabaseUrl] = useState<string>(SUPABASE_URL);
   const [user, setUser] = useState<User | null>(null);
   const [openAiKey, setOpenAiKey] = useState<string>("");
 

@@ -8,13 +8,24 @@ import {
 } from "@/types/actions/messages/invoke";
 import { logger } from "@/lib/logger";
 import { invokeClaudeAPI } from "../llm/cluade";
+import { PageStateHistory } from "@/types/state/history";
+import { addHistory, getHistoryBySessionId } from "@/stores/supabase";
 
 export async function invoke(
   input: InvokeRequest,
 ): Promise<InvokeResponse | void> {
   try {
     logger.info(`Invoke request initiated`);
-    console.log(input);
+    logger.info(input.pageState.textContent);
+    // Update history
+    // const history: PageStateHistory | null = await getHistoryBySessionId();
+    // if (!history) {
+    //   await addHistory({
+
+    //   })
+    // }
+    // console.log("help", history);
+
     // TODO: Database, LLM, etc.
     // const response =
     // const invokeResponse = invokeResponseSchema.parse(response.data);
