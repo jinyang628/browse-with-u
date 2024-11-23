@@ -3,11 +3,20 @@ import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
 import { logger } from "@/lib/logger";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
-import { UrlHistory } from "@/types/state/history";
+import { PageState } from "@/types/page";
 import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
 
 import { useState, useEffect } from "react";
+
+export const saveUrlHistory = (history: Partial<PageState>[]) => {
+  chrome.storage.local.set({ urlHistory: JSON.stringify(history) });
+};
+
+export const getUrlHistory = async (): Promise<Partial<PageState>[]> => {
+  const result = await chrome.storage.local.get("urlHistory");
+  return result?.urlHistory ? JSON.parse(result.urlHistory) : [];
+};
 
 export default function InjectedBase() {
   const [isChatContainerVisible, setIsChatContainerVisible] =
@@ -16,18 +25,23 @@ export default function InjectedBase() {
   const [latestResponse, setLatestResponse] = useState<string>("");
   const { recordingState, setRecordingState } = useRecordingStore();
 
+  // useEffect(() => {
+  //   const getHistory = async () => {
+  //     const previousHistory = await getUrlHistory();
+  //     saveUrlHistory(
+  //       [
+  //         ...previousHistory,
+  //         { url: "test3", textContent: "hello" },
+  //       ].slice(-10),
+  //     );
+  //     const history = await getUrlHistory();
+  //   };
+  //   getHistory();
+  // }, [recordingState]);
+
   useEffect(() => {
     setIsRendered(true);
   }, [isChatContainerVisible]);
-
-  const saveUrlHistory = (history: UrlHistory[]) => {
-    localStorage.setItem("urlHistory", JSON.stringify(history));
-  };
-
-  const getUrlHistory = (): UrlHistory[] => {
-    const history = localStorage.getItem("urlHistory");
-    return history ? JSON.parse(history) : [];
-  };
 
   const handleRecording = async () => {
     const pageState = await getCurrentPageState();
@@ -45,15 +59,13 @@ export default function InjectedBase() {
       setLatestResponse(invokeResponse.response);
     }
 
-    const currentHistory = getUrlHistory();
-    const newHistoryEntry: UrlHistory = {
-      url: window.location.href,
-      response: invokeResponse?.response || "",
-      timestamp: Date.now(),
+    const newHistoryEntry: Partial<PageState> = {
+      url: pageState.url,
+      textContent: pageState.textContent,
     };
 
-    const updatedHistory = [...currentHistory, newHistoryEntry].slice(-10);
-    saveUrlHistory(updatedHistory);
+    const previousHistory = await getUrlHistory();
+    saveUrlHistory([...previousHistory, newHistoryEntry].slice(-10));
 
     return invokeResponse;
   };
