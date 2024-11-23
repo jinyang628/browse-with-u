@@ -20,22 +20,22 @@ export default function InjectedBase() {
   // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setIsChatContainerVisible(prev => !prev);
+        setIsChatContainerVisible((prev) => !prev);
       }
 
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'l') {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "l") {
         e.preventDefault();
-        setIsRecording(prev => !prev);
+        setIsRecording((prev) => !prev);
       }
     };
-  
-    window.addEventListener('keydown', handleKeyDown, true);
-    return () => window.removeEventListener('keydown', handleKeyDown, true);
+
+    window.addEventListener("keydown", handleKeyDown, true);
+    return () => window.removeEventListener("keydown", handleKeyDown, true);
   }, []);
 
-  // Handle recording 
+  // Handle recording
   useEffect(() => {
     if (!isRecording) return;
     if (urlRef.current === window.location.href) return;
@@ -43,15 +43,14 @@ export default function InjectedBase() {
 
     const handleRecording = async () => {
       const pageState = await getCurrentPageState();
-			const invokeRequest = invokeRequestSchema.parse({
-				pageState: pageState,
-			})
-			const invokeResponse = await invoke(invokeRequest);
-      return invokeResponse; 
+      const invokeRequest = invokeRequestSchema.parse({
+        pageState: pageState,
+      });
+      const invokeResponse = await invoke(invokeRequest);
+      return invokeResponse;
     };
 
     handleRecording();
-    
   }, [isRecording]);
 
   if (!isRendered) return null;

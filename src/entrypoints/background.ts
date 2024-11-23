@@ -1,6 +1,4 @@
-import {
-  CAPTURE_SCREENSHOT_ACTION,
-} from "@/constants/browser";
+import { CAPTURE_SCREENSHOT_ACTION } from "@/constants/browser";
 
 export default defineBackground(() => {
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {

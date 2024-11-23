@@ -10,20 +10,24 @@ pnpm dev
 ```
 
 ### Hackathon Deliverables
+
 - 3 minute demo
 - 1 minute video
 - 1 main visual
 
 ### What?
+
 An agent that identifies your objectives and provides suggestions.
 
 Use case (need to come up with more)
+
 - user is looking for food and agent finds him food that fits his itinerary and preferences (allergies etc)
-- form filling 
+- form filling
 - writing thrive map report
 - user is doing research on a topic, and is constantly alternating between reading blogs/articles and his google doc that stores his learnings/ideas
 
-### How? 
+### How?
+
 1. Agent collects data from the page states visited by the user
 2. Agent identifies objectives
 3. Agent provides suggestions to objectives based on STM and LTM
@@ -32,13 +36,14 @@ Use case (need to come up with more)
 - LTM: long term memory: user defined information (resume, travel itinerary, google docs, mum's name, preferences etc)
 
 P0 Core functionalities
+
 - Agent can store page states from user browsing (STM)
 - Agent can store user-defined information (LTM)
-- Agent can identify objectives 
+- Agent can identify objectives
 - Agent can give suggestions based on LTM and STM
 
-
 P1:
+
 - Agent can add things to LTM using user's answers to preference questions
 
 Preference questions: yes/no questions regarding user preferences (do u like ramen? | are u allergic to peanuts?) + if not, what? (user can provide a text)
