@@ -12,6 +12,7 @@ export async function invoke(
 ): Promise<InvokeResponse | void> {
   try {
     logger.info(`Invoke request initiated`);
+    console.log(input);
     // TODO: Database, LLM, etc.
     // const response =
     // const invokeResponse = invokeResponseSchema.parse(response.data);
