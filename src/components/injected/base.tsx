@@ -2,6 +2,7 @@ import { invoke } from "@/actions/messages/invoke";
 import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
+import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
 
 import { useState, useEffect } from "react";
@@ -10,8 +11,7 @@ export default function InjectedBase() {
   const [isChatContainerVisible, setIsChatContainerVisible] =
     useState<boolean>(false);
   const [isRendered, setIsRendered] = useState<boolean>(false);
-  const [isRecording, setIsRecording] = useState<boolean>(false);
-  const urlRef = useRef<string>("");
+  const { recordingState, setRecordingState } = useRecordingStore();
 
   useEffect(() => {
     setIsRendered(true);
@@ -37,9 +37,11 @@ export default function InjectedBase() {
 
   // Handle recording
   useEffect(() => {
-    if (!isRecording) return;
-    if (urlRef.current === window.location.href) return;
-    urlRef.current = window.location.href;
+    if (recordingState.url === window.location.href) return; // Don't record if the URL hasn't changed
+
+    setRecordingState({ ...recordingState, url: window.location.href });
+
+    if (!recordingState.isRecording) return;
 
     const handleRecording = async () => {
       const pageState = await getCurrentPageState();
@@ -51,7 +53,7 @@ export default function InjectedBase() {
     };
 
     handleRecording();
-  }, [isRecording]);
+  }, [recordingState.isRecording]);
 
   if (!isRendered) return null;
 
@@ -69,7 +71,7 @@ export default function InjectedBase() {
   return (
     <PulsatingCircle
       isVisible={!isChatContainerVisible}
-      isRecording={isRecording}
+      isRecording={recordingState.isRecording}
       onIconClick={() => {
         setIsRendered(false);
         setIsChatContainerVisible(true);
