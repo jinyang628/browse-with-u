@@ -17,7 +17,7 @@ export function RecordingStatusBadge({
     <div className="flex items-center gap-2">
       <Badge
         variant={isRecording ? "default" : "secondary"}
-        className={`flex items-center gap-1 ${isRecording ? "animate-pulse" : ""}`}
+        className={`flex items-center gap-1 ${isRecording ? "border-green-500 animate-pulse" : "border-red-500"}`}
       >
         {isRecording ? (
           <>
@@ -34,7 +34,7 @@ export function RecordingStatusBadge({
       {isRecording ? (
         <div
           onClick={onPauseButtonClick}
-          className="w-5 h-5 p-1 bg-black text-white rounded-full cursor-pointer"
+          className="w-5 h-5 p-1 bg-black text-white rounded-xs rounded-full cursor-pointer"
         >
           <Pause size={11} />
         </div>
