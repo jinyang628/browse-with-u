@@ -11,6 +11,11 @@ const pageState = {
   "screenshot" : "x.png"
 }
 
+const pageStates = [
+  {url: 'https://example.com', textContent: 'Example content'},
+  {url: 'https://test.com', textContent: 'Test content'}
+];
+
 export default function App() {
   const [apiKey, setApiKey] = useState<string>("");
   const [supabaseKey, setSupabaseKey] = useState<string>("");

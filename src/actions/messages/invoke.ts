@@ -39,7 +39,12 @@ User's preferences:
 - dietary restrictions: none
 `;
 
-function extractGoogleQuery(url: string): string | null {
+/**
+ * takes in a list of pageStates and returns a formatted string of the pageStates
+ * @param url - The URL to parse
+ * @returns The decoded search query string if found, null otherwise
+ */
+function parsePageStates(url: string): string | null {
   try {
       // Create URL object
       const urlObj = new URL(url);
