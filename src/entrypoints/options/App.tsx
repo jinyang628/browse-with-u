@@ -14,18 +14,18 @@ export default function App() {
   const [openAiKey, setOpenAiKey] = useState<string>("");
 
   return (
-    <div className="flex h-screen w-full p-8">
+    <div className="flex justify-center h-screen w-full p-8">
       <Tabs defaultValue="keys" className="w-[800px]">
-        <TabsList>
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="user">User</TabsTrigger>
           <TabsTrigger value="keys">API Keys</TabsTrigger>
         </TabsList>
-        <TabsContent value="user">
+        <TabsContent className="flex justify-center" value="user">
           <UserDataForm />
         </TabsContent>
         <TabsContent value="keys">
-          <div className="flex flex-col space-y-4 max-w-[800px] max-h-[800px] w-full p-4">
-            <Card className="flex flex-col space-y-4 max-w-[480px] p-4 w-full">
+          <div className="flex justify-center flex-col space-y-4 max-w-[800px] max-h-[800px] w-full p-4 mx-auto">
+            <Card className="flex flex-col justify-center align-middle space-y-4 max-w-[auto] p-4 w-full mx-auto">
               <p className="text-base font-semibold">Anthropic API Key:</p>
               <Input
                 onChange={(e) => setApiKey(e.target.value)}
