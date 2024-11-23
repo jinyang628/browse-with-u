@@ -66,6 +66,7 @@ export type Database = {
       };
       users: {
         Row: {
+          allergies: string | null;
           created_at: string;
           data: string | null;
           data_vector: string | null;
@@ -86,10 +87,10 @@ export type Database = {
           occupation: string | null;
           phone: string | null;
           skills: string | null;
-          sleep_hours: number | null;
-          allergies: string | null;
+          sleep_hours: string | null;
         };
         Insert: {
+          allergies?: string | null;
           created_at?: string;
           data?: string | null;
           data_vector?: string | null;
@@ -110,10 +111,10 @@ export type Database = {
           occupation?: string | null;
           phone?: string | null;
           skills?: string | null;
-          sleep_hours?: number | null;
-          allergies?: string | null;
+          sleep_hours?: string | null;
         };
         Update: {
+          allergies?: string | null;
           created_at?: string;
           data?: string | null;
           data_vector?: string | null;
@@ -134,8 +135,7 @@ export type Database = {
           occupation?: string | null;
           phone?: string | null;
           skills?: string | null;
-          sleep_hours?: number | null;
-          allergies?: string | null;
+          sleep_hours?: string | null;
         };
         Relationships: [];
       };

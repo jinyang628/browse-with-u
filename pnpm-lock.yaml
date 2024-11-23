@@ -61,6 +61,9 @@ importers:
       normalize-url:
         specifier: ^8.0.1
         version: 8.0.1
+      openai:
+        specifier: ^4.73.0
+        version: 4.73.0(zod@3.23.8)
       pdfjs-dist:
         specifier: ^4.8.69
         version: 4.8.69
@@ -3891,6 +3894,18 @@ packages:
       }
     engines: { node: ">=14.16" }
 
+  openai@4.73.0:
+    resolution:
+      {
+        integrity: sha512-NZstV77w3CEol9KQTRBRQ15+Sw6nxVTicAULSjYO4wn9E5gw72Mtp3fAVaBFXyyVPws4241YmFG6ya4L8v03tA==,
+      }
+    hasBin: true
+    peerDependencies:
+      zod: ^3.23.8
+    peerDependenciesMeta:
+      zod:
+        optional: true
+
   ora@6.3.1:
     resolution:
       {
@@ -7433,6 +7448,20 @@ snapshots:
       define-lazy-prop: 3.0.0
       is-inside-container: 1.0.0
       is-wsl: 2.2.0
+
+  openai@4.73.0(zod@3.23.8):
+    dependencies:
+      "@types/node": 18.19.65
+      "@types/node-fetch": 2.6.12
+      abort-controller: 3.0.0
+      agentkeepalive: 4.5.0
+      form-data-encoder: 1.7.2
+      formdata-node: 4.4.1
+      node-fetch: 2.7.0
+    optionalDependencies:
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - encoding
 
   ora@6.3.1:
     dependencies:

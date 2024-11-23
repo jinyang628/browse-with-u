@@ -5,8 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { GET, UPDATE, User } from "@/stores/supabase";
 import PdfUpload from "@/components/options/pdf-upload";
+import { extractProfileFromPdf } from "@/actions/llm/profileFuncCall";
+import { cn } from "@/lib/utils";
 
 export const UserDataForm: React.FC = () => {
+  const [isTyping, setIsTyping] = useState(false);
   const [userData, setUserData] = useState<Partial<User>>({
     name: "",
     date_of_birth: "",
@@ -18,7 +21,7 @@ export const UserDataForm: React.FC = () => {
     languages: "",
     health_conditions: "",
     fitness_goals: "",
-    sleep_hours: 8,
+    sleep_hours: "8",
     occupation: "",
     industry: "",
     skills: "",
@@ -30,8 +33,46 @@ export const UserDataForm: React.FC = () => {
 
   const onPdfUpload = (pdf_base64_image: string) => {
     // Call LLM
-    console.log(pdf_base64_image);
+    //console.log(pdf_base64_image);
     // setUserData(response);
+  };
+
+  const useTypewriter = (text: string, speed: number = 50) => {
+    const [displayText, setDisplayText] = useState("");
+
+    useEffect(() => {
+      let i = -1;
+      if (!text) {
+        return;
+      }
+      const typing = setInterval(() => {
+        if (i < text.length) {
+          setDisplayText((prev) => prev + text.charAt(i));
+          i++;
+        } else {
+          clearInterval(typing);
+        }
+      }, speed);
+
+      return () => clearInterval(typing);
+    }, [text, speed]);
+
+    return displayText;
+  };
+
+  const onTextExtracted = (text: string) => {
+    const updateUserData = async () => {
+      const extracted_data = await extractProfileFromPdf(text);
+      if (extracted_data) {
+        // Add null check
+        setUserData(extracted_data);
+      }
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+      }, 1000);
+    };
+    updateUserData();
   };
 
   useEffect(() => {
@@ -64,16 +105,24 @@ export const UserDataForm: React.FC = () => {
             <p className="text-base font-semibold w-[250px]">
               Personal Information
             </p>
-            <PdfUpload onPdfUpload={onPdfUpload} />
+            <PdfUpload
+              onPdfUpload={onPdfUpload}
+              onTextExtracted={onTextExtracted}
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                value={userData.name || ""}
+                value={useTypewriter(userData.name || "")}
                 onChange={handleChange("name")}
                 placeholder="Enter your name"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -82,8 +131,13 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="dateOfBirth"
                 type="date"
-                value={userData.date_of_birth || ""}
+                value={useTypewriter(userData.date_of_birth || "")}
                 onChange={handleChange("date_of_birth")}
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -92,9 +146,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="email"
                 type="email"
-                value={userData.email || ""}
+                value={useTypewriter(userData.email || "")}
                 onChange={handleChange("email")}
                 placeholder="Enter your email"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -103,9 +162,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="phone"
                 type="tel"
-                value={userData.phone || ""}
+                value={useTypewriter(userData.location || "")}
                 onChange={handleChange("phone")}
                 placeholder="Enter your phone number"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -117,9 +181,14 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="location">Location</Label>
               <Input
                 id="location"
-                value={userData.location || ""}
+                value={useTypewriter(userData.location || "")}
                 onChange={handleChange("location")}
                 placeholder="Enter your location"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -130,6 +199,11 @@ export const UserDataForm: React.FC = () => {
                 type="text"
                 value={userData.nationality || ""}
                 onChange={handleChange("nationality")}
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -138,9 +212,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="languages"
                 type="text"
-                value={userData.languages || ""}
+                value={useTypewriter(userData.languages || "")}
                 onChange={handleChange("languages")}
                 placeholder="Enter your languages"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -150,9 +229,14 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="healthConditions">Health Conditions</Label>
               <Input
                 id="healthConditions"
-                value={userData.health_conditions || ""}
+                value={useTypewriter(userData.health_conditions || "")}
                 onChange={handleChange("health_conditions")}
                 placeholder="Enter your health conditions"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -161,9 +245,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="allergies"
                 type="text"
-                value={userData.allergies || ""}
+                value={useTypewriter(userData.allergies || "")}
                 onChange={handleChange("allergies")}
                 placeholder="Enter your allergies"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -172,9 +261,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="fitnessGoals"
                 type="text"
-                value={userData.fitness_goals || ""}
+                value={useTypewriter(userData.fitness_goals || "")}
                 onChange={handleChange("fitness_goals")}
                 placeholder="Enter your fitness goals"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -183,9 +277,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="sleepHours"
                 type="text"
-                value={userData.sleep_hours || ""}
+                value={useTypewriter(userData.sleep_hours || "")}
                 onChange={handleChange("sleep_hours")}
                 placeholder="Enter your sleep hours"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -195,9 +294,14 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="occupation">Occupation</Label>
               <Input
                 id="occupation"
-                value={userData.occupation || ""}
+                value={useTypewriter(userData.occupation || "")}
                 onChange={handleChange("occupation")}
                 placeholder="Enter your occupation"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -206,9 +310,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="industry"
                 type="text"
-                value={userData.industry || ""}
+                value={useTypewriter(userData.industry || "")}
                 onChange={handleChange("industry")}
                 placeholder="Enter your industry"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -217,9 +326,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="skills"
                 type="text"
-                value={userData.skills || ""}
+                value={useTypewriter(userData.skills || "")}
                 onChange={handleChange("skills")}
                 placeholder="Enter your skills"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
@@ -231,9 +345,14 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="location">Hobbies</Label>
               <Input
                 id="hobbies"
-                value={userData.hobbies || ""}
+                value={useTypewriter(userData.hobbies || "")}
                 onChange={handleChange("hobbies")}
                 placeholder="Enter your hobbies"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -242,9 +361,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="food"
                 type="text"
-                value={userData.food || ""}
+                value={useTypewriter(userData.food || "")}
                 onChange={handleChange("food")}
                 placeholder="Enter your food"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
 
@@ -253,9 +377,14 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="goals"
                 type="text"
-                value={userData.goals || ""}
+                value={useTypewriter(userData.goals || "")}
                 onChange={handleChange("goals")}
                 placeholder="Enter your goals"
+                className={cn(
+                  "transition-all duration-300",
+                  isTyping &&
+                    "animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent bg-[length:400%_100%] border-blue-400",
+                )}
               />
             </div>
           </div>
