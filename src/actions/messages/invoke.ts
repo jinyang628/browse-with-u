@@ -7,12 +7,19 @@ import {
 } from "@/types/actions/messages/invoke";
 import { logger } from "@/lib/logger";
 import { invokeClaudeAPI } from "../llm/cluade";
+import { PageState } from "@/types/page";
 
-export const prompt = `Given a webpage with:
+export const prompt = `You are an expert at identifying what users are trying to do when they are browsing the web.
+
+You are given a list of the user's past visited webpages, for each webpage you are given the URL and the text content.
+
+Given a webpage with:
 - URL: {url}
 - Text content: {textContent}
 
-Your task is to identify what is the objective of the user, respond in a clear, structured format
+Your task is to identify what is the objective of the user, respond in a clear, structured format. You should not return anything except the objective.
+
+Refer to the following examples of good and bad responses:
 
 <GOOD RESPONSES>
 - "I am looking for food"
@@ -25,10 +32,6 @@ Above are good responses because they are concise and direct.
 <BAD RESPONSES>
 bad responses: 
 "Based on the URL and text content, the user is looking for information about "swimming lessons" - this appears to be a search query on Google.
-
-This can be determined from:
-1. The search query parameter in the URL (q=swimming)
-2. The swimming related terms in the page content"
 </BAD RESPONSES>
 Above is a bad response because it is contains a lot of redundant information like reasoning, a good reponse would be "I am looking for swimming lessons"
 `;
@@ -60,6 +63,15 @@ function parsePageStates(url: string): string | null {
   }
 }
 
+function formatPageStates(pageStates: PageState[]): string {
+  return pageStates
+    .map((page, index) => 
+      `Page ${index + 1}:
+URL: ${page.url}
+Content: ${page.textContent}
+`).join('\n');
+}
+
 export async function invoke(
   input: InvokeRequest,
 ): Promise<InvokeResponse | void> {
@@ -69,10 +81,11 @@ export async function invoke(
     // TODO: Database, LLM, etc.
     // const response =
     // const invokeResponse = invokeResponseSchema.parse(response.data);
+    const formatted_pages = formatPageStates(input.pageStates);
     const final_prompt = prompt
       .replace("{url}", input.pageState.url)
-      .replace("{textContent}", input.pageState.textContent);
-    const response = await invokeClaudeAPI(final_prompt);
+    console.log(formatted_pages);
+//    const response = await invokeClaudeAPI(final_prompt);
 
     // logger.info(`Invoke response received ${response}`);
 
