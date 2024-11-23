@@ -1,14 +1,14 @@
+import React, { useState, useEffect } from "react";
 import { invoke } from "@/actions/messages/invoke";
 import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
+import TogglableSpeechBubble from "@/components/injected/speech-bubble";
 import { logger } from "@/lib/logger";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
 import { Message, roleSchema } from "@/types/messages/base";
 import { PageState } from "@/types/page";
 import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
-
-import { useState, useEffect } from "react";
 
 export const saveUrlHistory = (history: Partial<PageState>[]) => {
   chrome.storage.local.set({ urlHistory: JSON.stringify(history) });
@@ -25,6 +25,7 @@ export default function InjectedBase() {
   const [isRendered, setIsRendered] = useState<boolean>(false);
   const { recordingState, setRecordingState } = useRecordingStore();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [unseenMessageExist, setUnseenMessageExist] = useState(false);
 
   useEffect(() => {
     setIsRendered(true);
@@ -46,6 +47,9 @@ export default function InjectedBase() {
       ...messages,
       { content: invokeResponse.response, role: roleSchema.Values.assistant },
     ]);
+    if (!isChatContainerVisible) {
+      setUnseenMessageExist(true);
+    }
 
     const newHistoryEntry: Partial<PageState> = {
       url: pageState.url,
@@ -58,7 +62,6 @@ export default function InjectedBase() {
     return invokeResponse;
   };
 
-  // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -88,9 +91,9 @@ export default function InjectedBase() {
 
   useEffect(() => {
     if (!recordingState.isRecording) return;
-
     handleRecording();
   }, []);
+
   if (!isRendered) return null;
 
   if (isChatContainerVisible) {
@@ -118,13 +121,21 @@ export default function InjectedBase() {
   }
 
   return (
-    <PulsatingCircle
-      isVisible={!isChatContainerVisible}
-      isRecording={recordingState.isRecording}
-      onIconClick={() => {
-        setIsRendered(false);
-        setIsChatContainerVisible(true);
-      }}
-    />
+    <div className="fixed inset-0 pointer-events-none">
+      <div className="absolute bottom-11 right-11">
+        <TogglableSpeechBubble text={"!!!"} isVisible={unseenMessageExist} />
+      </div>
+      <div className="absolute bottom-4 right-4 pointer-events-auto">
+        <PulsatingCircle
+          isVisible={!isChatContainerVisible}
+          isRecording={recordingState.isRecording}
+          onIconClick={() => {
+            setIsRendered(false);
+            setIsChatContainerVisible(true);
+            setUnseenMessageExist(false);
+          }}
+        />
+      </div>
+    </div>
   );
 }

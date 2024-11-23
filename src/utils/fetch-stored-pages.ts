@@ -5,7 +5,7 @@ import { PageState, pageStateSchema } from "@/types/page";
 export default async function fetchStoredPages(): Promise<PageState[]> {
   // Example usage
   // const data = await fetchStoredPages();
-  
+
   const result = await GET<"webpages">("webpages", {
     session_id: 1, // Hard coded for now
   });
@@ -20,5 +20,5 @@ export default async function fetchStoredPages(): Promise<PageState[]> {
     });
     res.push(pageState);
   }
-  return res
-};
+  return res;
+}

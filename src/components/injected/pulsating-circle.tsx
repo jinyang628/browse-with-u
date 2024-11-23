@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
+
 type PulsatingCircleProps = {
   isVisible: boolean;
   isRecording: boolean;
   onIconClick: () => void;
 };
+
 export default function PulsatingCircle({
   isVisible,
   isRecording,
@@ -26,7 +28,7 @@ export default function PulsatingCircle({
   if (!isVisible) return null;
 
   return (
-    <div className="relative w-16 h-16 rounded-full">
+    <div className="relative w-16 h-16 rounded-full bg-transparent">
       <motion.div
         className={`absolute inset-0 rounded-full ${isRecording ? "bg-green-500" : "bg-yellow-500"} opacity-50`}
         animate={{
