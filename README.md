@@ -41,7 +41,7 @@ Use case (need to come up with more)
 P0 Core functionalities
 
 - store list of 10 most recent page states from user browsing (STM)
-- store user-defined information (LTM)
+- store user-defined information (LTM) (DONE)
   > LTM is a single string
 - identify objectives
   > input: list of page states,
@@ -63,9 +63,8 @@ P1/P2
 
 preprocessing:
 
-- We have a function that extracts domain andquery params from url (cut size of url)
-- page states store url params and domain instead of entire url
-
+- We have a function that extracts domain and query params from url/trims the url of unnecessary content (DONE)
+- page states store url params and domain instead of entire url (DONE)
 - Agent has a functional window of recent page states.
 - Agent can add things to LTM using user's answers to preference questions
 - Agent can identify if user is in scrolling mode (dont track page states)
