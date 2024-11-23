@@ -11,8 +11,4 @@ export const defaultPageStateHistory: PageStateHistory = {
   history: [],
 };
 
-export type UrlHistory = {
-  url: string;
-  response: string;
-  timestamp: number;
-};
+

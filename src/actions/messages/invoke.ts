@@ -8,20 +8,26 @@ import {
 import { logger } from "@/lib/logger";
 import { invokeClaudeAPI } from "../llm/cluade";
 import { PageStateHistory } from "@/types/state/history";
-import { History, Webpage } from "@/stores/supabase";
+import { History, POST, Webpage } from "@/stores/supabase";
+import { getUrlHistory } from "@/components/injected/base";
+import { formatHistory } from "@/utils/pagestate/format-history";
 
 export const prompt = `Given a webpage with:
 - URL: {url}
-- Text content: {textContent}
+- Current web page text content: {textContent}
 
-Your task is to identify what is the objective of the user, respond in a clear, structured format
+- History of previous web pages: {history}
+
+Your task is to identify what is the objective of the user, and help the user achieve their objective in 
+the most efficient and concise way possible. Try to understand the user's intent and provide a really concise (15 words or less) response.
+
+- User details: {user_details}
+
 
 <GOOD RESPONSES>
-- "I am looking for food"
-- "User is looking for fastest way to get a driver's license"
-- "I am looking for a content marketing agency"
-- "I am looking for a SEO agency"
-</GOOD RESPONSES>
+- "There's a Ramen restaurant nearby  which you might like"
+- "This link seems to have all the info."
+
 Above are good responses because they are concise and direct.
 
 <BAD RESPONSES>
@@ -76,25 +82,19 @@ export async function invoke(
       session_id: 1, // Hard coded for now
     };
 
-    // const webpage_id: number = await addWebpage(webpage);
-    // Update history
-    // const history: History | null = await getHistoryBySessionId();
-    // if (!history) {
-    //   await addHistory({
-    //     session_id: 1,
+    const webpage_id: number = await POST('webpages', [webpage]);
+    const browser_history = await getUrlHistory()
 
-    //   })
-    // }
-    // console.log("help", history);
+    const formatted_history = formatHistory(browser_history)
 
-    // TODO: Database, LLM, etc.
-    // const response =
-    // const invokeResponse = invokeResponseSchema.parse(response.data);
     const final_prompt = prompt
       .replace("{url}", input.pageState.url)
-      .replace("{textContent}", input.pageState.textContent);
+      .replace("{textContent}", input.pageState.textContent)
+      .replace("{history}", formatted_history)
+
     const final_response = await invokeClaudeAPI(final_prompt);
 
+    console.log(final_response)
     const invokeResponse = { response: final_response.text };
     return invokeResponse;
   } catch (error: unknown) {
