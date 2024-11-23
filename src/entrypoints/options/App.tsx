@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { User } from "@/stores/supabase";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserDataForm } from "@/components/options/user-data";
+import { Card } from "@/components/ui/card";
 
 export default function App() {
   const [apiKey, setApiKey] = useState<string>("");
@@ -22,7 +23,8 @@ export default function App() {
           <UserDataForm />
         </TabsContent>
         <TabsContent value="keys">
-          <div className="flex flex-col space-y-4 max-w-[480px] w-full">
+        <div className="flex flex-col space-y-4 max-w-[800px] max-h-[800px] w-full p-4">
+          <Card className="flex flex-col space-y-4 max-w-[480px] p-4 w-full">
             <p className="text-base font-semibold">Anthropic API Key:</p>
             <Input
               onChange={(e) => setApiKey(e.target.value)}
@@ -57,6 +59,7 @@ export default function App() {
             >
               Save
             </Button>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>

@@ -10,7 +10,7 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
     const supabaseUrl = await browser.storage.sync.get("supabaseUrl");
     supabaseClient = createClient(
       supabaseUrl.supabaseUrl,
-      supabaseKey.supabaseKey
+      supabaseKey.supabaseKey,
     );
   }
   return supabaseClient;
@@ -18,7 +18,10 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
 
 export type _User = Tables<"users">;
 export type User = Omit<_User, "id" | "created_at">;
-export type UserData = Omit<_User, "id" | "created_at" | "data" | "data_vector">;
+export type UserData = Omit<
+  _User,
+  "id" | "created_at" | "data" | "data_vector"
+>;
 
 export type _Webpage = Tables<"webpages">;
 export type Webpage = Omit<_Webpage, "id" | "created_at">;
