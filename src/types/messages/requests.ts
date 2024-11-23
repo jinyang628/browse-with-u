@@ -6,3 +6,7 @@ export const screenshotRequestSchema = z.object({
 });
 
 export type ScreenshotRequest = z.infer<typeof screenshotRequestSchema>;
+
+export const invokeSpeechRequestSchema = z.object({
+  text: z.string(),
+});
