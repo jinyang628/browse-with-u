@@ -19,7 +19,7 @@ type ChatContainerProps = {
 
 type ChatMessage = {
   content: string;
-  role: "user" | "assistant";  
+  role: "user" | "assistant";
 };
 
 export function ChatContainer({
@@ -38,7 +38,7 @@ export function ChatContainer({
     setMessages([...messages, { content: latestResponse, role: "assistant" }]);
   }, [latestResponse]);
 
-  console.log('latestResponse', latestResponse);
+  console.log("latestResponse", latestResponse);
 
   const handleSendMessage = () => {
     if (inputValue.trim() === "") return;

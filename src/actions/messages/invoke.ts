@@ -70,7 +70,7 @@ export async function invoke(
       .replace("{textContent}", input.pageState.textContent);
     const final_response = await invokeClaudeAPI(final_prompt);
 
-    const invokeResponse = {response: final_response.text};
+    const invokeResponse = { response: final_response.text };
     return invokeResponse;
   } catch (error: unknown) {
     logger.error(`Invoke error: ${error}`);
