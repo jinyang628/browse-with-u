@@ -6,17 +6,34 @@ import browser from "webextension-polyfill";
 import { getCurrentPageState } from "@/utils/pagestate/get";
 import { getUserById, User } from "@/stores/supabase";
 import { logger } from "@/lib/logger";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import ChatBottomBar from "@/components/chat/bottom-bar";
 
 export function ChatContainer() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [user, setUser] = useState<User | null>(null);
+  const [inputValue, setInputValue] = useState<string>("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const handleSendMessage = () => {
+    if (inputValue.trim() === "") return;
+    setInputValue("");
+    console.log("Sending message");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
 
   if (!isVisible) return null;
 

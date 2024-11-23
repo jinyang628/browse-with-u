@@ -1,6 +1,7 @@
 import { invoke } from "@/actions/messages/invoke";
 import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
+import { logger } from "@/lib/logger";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
 import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
@@ -65,8 +66,17 @@ export default function InjectedBase() {
     return (
       <ChatContainer
         isVisible={isChatContainerVisible}
+        isRecording={recordingState.isRecording}
         onContainerClose={() => {
           setIsChatContainerVisible(false);
+        }}
+        onPlayButtonClick={() => {
+          logger.info("Play button clicked");
+          setRecordingState({ ...recordingState, isRecording: true });
+        }}
+        onPauseButtonClick={() => {
+          logger.info("Pause button clicked");
+          setRecordingState({ ...recordingState, isRecording: false });
         }}
       />
     );
