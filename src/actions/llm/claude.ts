@@ -1,6 +1,7 @@
 import browser from "webextension-polyfill";
 import { logger } from "@/lib/logger";
 import Anthropic from "@anthropic-ai/sdk";
+import postProcessClaudeResponse from "@/actions/llm/helper/postProcess";
 
 interface ClaudeMessage {
   role: "user" | "assistant";
@@ -28,7 +29,9 @@ export async function invokeClaudeAPI(query: string): Promise<any> {
       messages: [{ role: "user", content: query }],
     });
 
-    return result.content[0];
+    const processedResponse = postProcessClaudeResponse(result.content[0]);
+
+    return processedResponse;
   } catch (error) {
     logger.error(`Claude API error: ${error}`);
     throw error;

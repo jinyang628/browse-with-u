@@ -42,9 +42,10 @@ export function ChatContainer({
 
   const handleSendMessage = () => {
     if (inputValue.trim() === "") return;
-    setInputValue("");
-    console.log("Sending message");
+    logger.info("Sending message");
     setMessages([...messages, { content: inputValue, role: "user" }]);
+    setInputValue("");
+    console.log(messages);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
