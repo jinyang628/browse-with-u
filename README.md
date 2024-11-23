@@ -43,7 +43,6 @@ P1:
 
 Preference questions: yes/no questions regarding user preferences (do u like ramen? | are u allergic to peanuts?) + if not, what? (user can provide a text)
 
-
 short term memory (page states) is collected by the pages he has visited
 long term memory is user defined + user-added information based on preference questions
 

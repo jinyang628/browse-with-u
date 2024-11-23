@@ -1,6 +1,5 @@
 import {
   CAPTURE_SCREENSHOT_ACTION,
-  INVOKE_SPEECH_ACTION,
 } from "@/constants/browser";
 
 export default defineBackground(() => {
