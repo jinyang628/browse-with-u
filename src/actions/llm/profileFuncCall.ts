@@ -69,11 +69,11 @@ export async function extractProfileFromPdf(data: string) {
   // console.log('profile_func_call data', data)
   // const final_prompt = USER_PROMPT.replace("{user_data}", data);
   // const final_response = await invokeClaudeAPI(final_prompt);
-  const { apiKey } = await browser.storage.sync.get("openAiKey");
+  const { openAiKey } = await browser.storage.sync.get("openAiKey");
   const openai = new OpenAI({
     dangerouslyAllowBrowser: true,
     apiKey:
-      apiKey,
+    openAiKey,
   });
 
   const final_prompt = USER_PROMPT.replace("{user_data}", data);

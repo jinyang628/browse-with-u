@@ -36,6 +36,28 @@ export const UserDataForm: React.FC = () => {
     // setUserData(response);
   };
 
+  const useTypewriter = (text: string, speed: number = 50) => {
+    const [displayText, setDisplayText] = useState("");
+  
+    useEffect(() => {
+      let i = -1;
+      if (!text) return;
+      
+      const typing = setInterval(() => {
+        if (i < text.length) {
+          setDisplayText(prev => prev + text.charAt(i));
+          i++;
+        } else {
+          clearInterval(typing);
+        }
+      }, speed);
+  
+      return () => clearInterval(typing);
+    }, [text, speed]);
+  
+    return displayText;
+  };
+
   const onTextExtracted = (text: string) => {
     const updateUserData = async () => {
       const extracted_data = await extractProfileFromPdf(text);
@@ -87,7 +109,7 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                value={userData.name || ""}
+                value={useTypewriter(userData.name || "")}
                 onChange={handleChange("name")}
                 placeholder="Enter your name"
               />
@@ -98,7 +120,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="dateOfBirth"
                 type="date"
-                value={userData.date_of_birth || ""}
+                value={useTypewriter(userData.date_of_birth || "")}
                 onChange={handleChange("date_of_birth")}
               />
             </div>
@@ -108,7 +130,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="email"
                 type="email"
-                value={userData.email || ""}
+                value={useTypewriter(userData.email || "")}
                 onChange={handleChange("email")}
                 placeholder="Enter your email"
               />
@@ -119,7 +141,7 @@ export const UserDataForm: React.FC = () => {
               <Input
                 id="phone"
                 type="tel"
-                value={userData.phone || ""}
+                value={useTypewriter(userData.location || "")}
                 onChange={handleChange("phone")}
                 placeholder="Enter your phone number"
               />
@@ -133,7 +155,7 @@ export const UserDataForm: React.FC = () => {
               <Label htmlFor="location">Location</Label>
               <Input
                 id="location"
-                value={userData.location || ""}
+                value={useTypewriter(userData.location || "")}
                 onChange={handleChange("location")}
                 placeholder="Enter your location"
               />
