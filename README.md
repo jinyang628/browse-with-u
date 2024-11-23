@@ -1,10 +1,12 @@
-# browse-with-u
+# browse-with-u (Browzy)
 
 An AI companion that browses the web WITH you, not for you.
 
+The whole world is chasing after async agents that automate tasks without human involvement. Browzy takes a different approach by integrating AI capabilities into the existing human action flow. Think of it as a second pair of eyes that observes the webpage with you, providing you with personalized suggestions and recommendations based on your browsing history and preferences.
+
 ## How to run
 
-```
+```bash
 pnpm i
 pnpm dev
 ```
