@@ -14,18 +14,6 @@ export function ChatContainer() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await getUserById(1);
-      setUser(user);
-    }
-    getUser();
-  }, [])
-    
-  console.log('user', user);
-
-
   // TODO: This is just to test whether the api key is set, we should access it directly in the agent layer logic instead
   useEffect(() => {
     const retrieveApiKey = async () => {

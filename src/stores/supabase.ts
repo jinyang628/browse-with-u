@@ -7,7 +7,10 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
   if (!supabaseClient) {
     const supabaseKey = await browser.storage.sync.get("supabaseKey");
     const supabaseUrl = await browser.storage.sync.get("supabaseUrl");
-    supabaseClient = createClient(supabaseUrl.supabaseUrl, supabaseKey.supabaseKey);
+    supabaseClient = createClient(
+      supabaseUrl.supabaseUrl,
+      supabaseKey.supabaseKey,
+    );
   }
   return supabaseClient;
 }
@@ -18,9 +21,7 @@ export type User = Omit<_User, "id" | "created_at">;
 export type _Webpage = Tables<"webpages">;
 export type Webpage = Omit<_Webpage, "id" | "created_at">;
 
-export async function getUserById(
-  id: number,
-): Promise<User> {
+export async function getUserById(id: number): Promise<User> {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase
     .from("users")
@@ -41,7 +42,10 @@ export async function getUserById(
 
 export async function AddWebpage(webpage: Webpage) {
   const supabase = await getSupabaseClient();
-  const { data, error } = await supabase
-    .from("webpages")
-    .insert(webpage);
+  const { data, error } = await supabase.from("webpages").insert(webpage);
+}
+
+export async function updateWebpage(webpage: Webpage) {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase.from("webpages").update(webpage);
 }
