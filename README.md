@@ -28,39 +28,30 @@ pnpm build # Build the extension
 - 1 minute video
 - 1 main visual
 
-### What?
+### Use Cases
 
-An agent that identifies your objectives and provides suggestions.
+- User is looking for food on Yelp and Browzy assists him by suggesting restaurants that fits his itinerary and preferences/allergies
+- User is researching on a particular topic, Browzy helps to clarify difficult/relevant concepts on every unique site he visits
+- User is applying for a job and Browzy assists him by suggesting job openings on the page that matches his skills and preferences\
 
-Use case (need to come up with more)
+### How does Browzy do it?
 
-- user is looking for food and agent finds him food that fits his itinerary and preferences (allergies etc)
-- form filling
-- writing thrive map report
-- user is doing research on a topic, and is constantly alternating between reading blogs/articles and his google doc that stores his learnings/ideas
+1. Browzy collects data from the page states visited by the user (url, text content, screenshot, etc.)
+2. With this information, Browzy tries to guess the user's objective when browsing the web (if it is not given by the user)
+3. Agent then provides suggestions/recommendations to these objectives based on two buckets of information - STM (short term memory) and LTM (long term memory)
 
-### How?
+- STM includes the current and previous page states for this particular user session
+- LTM includes user defined profile information (resume, travel itinerary, google docs, mum's name, preferences, etc) that might or might not be relevant to any browsing session.
 
-1. Agent collects data from the page states visited by the user
-2. Agent identifies objectives
-3. Agent provides suggestions to objectives based on STM and LTM
+### Cool Features/Technical Details
 
-- STM: short term memory: current and past page states (with functional limit)
-- LTM: long term memory: user defined information (resume, travel itinerary, google docs, mum's name, preferences etc)
+1. A chat container is injected into the webpage that allows the user to interact with Browzy and view its suggestions easily.
+2. Browzy automatically uploads relevant LTM information into our vector database based on a PDF file.
+3. Browzy automatically collects and stores page states as the user browses the web (STM)
+4. Browzy automatically trims the webpage text, url, etc. to only include "interesting" information.
+5. Browzy proactively adds information to LTM based on trends drawn from STM
 
-P0 Core functionalities
-
-- store list of 10 most recent page states from user browsing (STM) (DONE)
-- store user-defined information (LTM) (DONE)
-  > LTM is a single string
-- identify objectives (DONE)
-  > input: list of page states,
-  > output: objective of the user
-- give suggestions to objectives based on LTM and STM (DONE)
-  > input: objective, LTM, STM
-  > output: suggestions
-
-P0 demo:
+### User stories
 
 - user is looking for food and agent finds him food that fits his itinerary and preferences (allergies etc)
   > user searches for "food near me"
@@ -68,20 +59,6 @@ P0 demo:
 - user is filling up a job application for supabase and agent gives recommendations
   > user is on the page for "job application for supabase"
   > popup returns resume in bullet points and user can easily crtl-c and crtl-v
-
-P1/P2
-
-preprocessing:
-
-- We have a function that extracts domain and query params from url/trims the url of unnecessary content (DONE)
-- page states store url params and domain instead of entire url (DONE)
-- Agent has a functional window of recent page states.
-- Agent can add things to LTM using user's answers to preference questions
-- Agent can identify if user is in scrolling mode (dont track page states)
-- use screenshots to get more context
-- press tab to autocomplete
-
-P1/P2 demo:
 
 - agent asks preference questions and adds to LTM
 - press tab to autocomplete while filling up job application
