@@ -15,7 +15,6 @@ export function RecordingStatusBadge({
 }: RecordingStatusBadgeProps) {
   return (
     <div className="flex items-center gap-2">
-      
       <Badge
         variant={isRecording ? "default" : "secondary"}
         className={`flex items-center gap-1 ${isRecording ? "animate-pulse" : ""}`}

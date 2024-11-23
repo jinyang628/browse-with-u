@@ -59,16 +59,16 @@ export function ChatContainer({
           <div className="flex items-center gap-1">
             <RecordingStatusBadge
               isRecording={isRecording}
-            onPlayButtonClick={onPlayButtonClick}
-            onPauseButtonClick={onPauseButtonClick}
-          />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-500 dark:text-gray-400"
-            onClick={onContainerClose}
-          >
-            <X size={20} />
+              onPlayButtonClick={onPlayButtonClick}
+              onPauseButtonClick={onPauseButtonClick}
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-500 dark:text-gray-400"
+              onClick={onContainerClose}
+            >
+              <X size={20} />
             </Button>
           </div>
         </div>
