@@ -9,8 +9,8 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
     const supabaseKey = await browser.storage.sync.get("supabaseKey");
     const supabaseUrl = await browser.storage.sync.get("supabaseUrl");
     supabaseClient = createClient(
-      supabaseUrl.supabaseUrl,
-      supabaseKey.supabaseKey,
+      "https://iguytkzyochkbcjrjxyx.supabase.co/",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlndXl0a3p5b2Noa2JjanJqeHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIzMzI4OTMsImV4cCI6MjA0NzkwODg5M30.HhMKSWAsPM5hj5RR9G1Qq2e0HNguKH5757ZrPWWOEoo",
     );
   }
   return supabaseClient;
@@ -18,6 +18,10 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
 
 export type _User = Tables<"users">;
 export type User = Omit<_User, "id" | "created_at">;
+export type UserData = Omit<
+  _User,
+  "id" | "created_at" | "data" | "data_vector"
+>;
 
 export type _Webpage = Tables<"webpages">;
 export type Webpage = Omit<_Webpage, "id" | "created_at">;
@@ -39,6 +43,17 @@ export async function getUserById(id: number): Promise<User> {
     throw new Error(`No user found for ${id}`);
   }
   return data[0];
+}
+
+export async function updateUserData(user: UserData) {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase.from("users").update(user).eq("id", 1);
+
+  if (error) {
+    throw new Error(`Error updating user: ${error.message}`);
+  }
+
+  return data;
 }
 
 export async function AddWebpage(webpage: Webpage) {
