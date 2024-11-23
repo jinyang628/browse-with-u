@@ -29,9 +29,9 @@ export const UserDataForm: React.FC = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await GET("users", { id: 1 });
-      if (user) {
-        setUserData(user[0]);
+      const users = await GET<"users">("users", { id: 1 });
+      if (users && users.length > 0) {
+        setUserData(users[0]);
       }
     };
     getUser();
@@ -46,7 +46,7 @@ export const UserDataForm: React.FC = () => {
     };
 
   const handleSubmit = () => {
-    UPDATE("users", { id: 1 }, userData);
+    UPDATE<"users">("users", { id: 1 }, userData);
   };
 
   return (
