@@ -2,6 +2,7 @@ import { logger } from "@/lib/logger";
 import { PageState, pageStateSchema } from "@/types/page";
 import { generateArticle } from "@/utils/pagestate/article";
 import { getScreenshot } from "@/utils/pagestate/screenshot";
+import normalizeUrl from "normalize-url";
 
 export const getCurrentPageState = async (): Promise<PageState | undefined> => {
   const article = generateArticle();
@@ -18,7 +19,7 @@ export const getCurrentPageState = async (): Promise<PageState | undefined> => {
   }
 
   const currentPageState = pageStateSchema.parse({
-    url: window.location.href,
+    url: normalizeUrl(window.location.href),
     textContent: textContent,
     screenshot: screenshot,
   });

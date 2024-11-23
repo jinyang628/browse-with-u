@@ -3,10 +3,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { GET, UPDATE, UserData } from "@/stores/supabase";
+import { GET, UPDATE, User } from "@/stores/supabase";
 
 export const UserDataForm: React.FC = () => {
-  const [userData, setUserData] = useState<UserData>({
+  const [userData, setUserData] = useState<Partial<User>>({
     name: "",
     date_of_birth: "",
     gender: "",
@@ -36,7 +36,7 @@ export const UserDataForm: React.FC = () => {
     getUser();
   }, []);
   const handleChange =
-    (field: keyof UserData) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    (field: keyof User) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setUserData({
         ...userData,
         [field]: event.target.value,
@@ -45,7 +45,6 @@ export const UserDataForm: React.FC = () => {
 
   const handleSubmit = () => {
     UPDATE<"users">("users", { id: 1 }, userData);
-    updateUserData(userData);
   };
 
   return (

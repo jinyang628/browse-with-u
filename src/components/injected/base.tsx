@@ -3,6 +3,7 @@ import { ChatContainer } from "@/components/injected/chat-container";
 import PulsatingCircle from "@/components/injected/pulsating-circle";
 import { logger } from "@/lib/logger";
 import { invokeRequestSchema } from "@/types/actions/messages/invoke";
+import { UrlHistory } from "@/types/state/history";
 import { useRecordingStore } from "@/types/store/recording";
 import { getCurrentPageState } from "@/utils/pagestate/get";
 
@@ -19,6 +20,16 @@ export default function InjectedBase() {
     setIsRendered(true);
   }, [isChatContainerVisible]);
 
+  const saveUrlHistory = (history: UrlHistory[]) => {
+    localStorage.setItem('urlHistory', JSON.stringify(history));
+  };
+
+  const getUrlHistory = (): UrlHistory[] => {
+    const history = localStorage.getItem('urlHistory');
+    console.log('history', history);
+    return history ? JSON.parse(history) : [];
+  };
+
   const handleRecording = async () => {
     const pageState = await getCurrentPageState();
     if (!pageState) {
@@ -29,10 +40,22 @@ export default function InjectedBase() {
     const invokeRequest = invokeRequestSchema.parse({
       pageState: pageState,
     });
+    
     const invokeResponse = await invoke(invokeRequest);
     if (invokeResponse) {
       setLatestResponse(invokeResponse.response);
     }
+
+    const currentHistory = getUrlHistory();
+      const newHistoryEntry: UrlHistory = {
+        url: window.location.href,
+        response: invokeResponse?.response || "",
+        timestamp: Date.now(),
+      };
+
+    const updatedHistory = [...currentHistory, newHistoryEntry].slice(-10);
+    saveUrlHistory(updatedHistory);
+
     return invokeResponse;
   };
 
